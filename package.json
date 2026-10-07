@@ -1,12 +1,12 @@
 {
   "name": "moje-pohadka",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "private": true,
-  "description": "Český designový prototyp příběhových omalovánek",
+  "description": "ÄŚeskĂ˝ designovĂ˝ prototyp pĹ™Ă­bÄ›hovĂ˝ch omalovĂˇnek",
   "scripts": {
     "start": "node preview-server.cjs",
-    "check": "node --check dist/app.js && node --check dist/preflight.js && node --check preview-server.cjs && node check-assets.cjs && node --test tests/product.test.mjs",
-    "build": "node scripts/build-worker.cjs"
+    "check": "node --check dist/app.js && node --check dist/preflight.js && node --check dist/site.js && node --check dist/companion-ui.js && node check-assets.cjs && node --test tests/*.test.mjs",
+    "build": "node scripts/build-pages.mjs && node scripts/build-worker.cjs"
   },
   "engines": {
     "node": ">=22"

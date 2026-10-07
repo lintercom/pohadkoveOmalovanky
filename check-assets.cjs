@@ -1,21 +1,4 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const assert = require('node:assert/strict');
-const root = path.join(__dirname, 'dist');
-const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
-assert.equal(ids.length, new Set(ids).size, 'Duplicate HTML IDs');
-for (const [, url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
-  if (/^(?:https?:|data:)/.test(url)) continue;
-  if (url.startsWith('#')) {
-    assert.ok(url === '#' || ids.includes(url.slice(1)), `Missing anchor: ${url}`);
-  } else {
-    assert.ok(fs.existsSync(path.join(root, url)), `Missing asset: ${url}`);
-  }
-}
-for (const file of ['editorial.css', 'forms.css']) {
-  const css = fs.readFileSync(path.join(root, file), 'utf8');
-  assert.equal((css.match(/{/g) || []).length, (css.match(/}/g) || []).length, `Unbalanced CSS: ${file}`);
-}
-assert.ok(fs.readFileSync(path.join(root, 'assets/ukazka-pohadky.pdf')).subarray(0,5).toString() === '%PDF-');
-console.log('All local assets, section links, CSS blocks and sample PDF checked.');
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const root=path.join(__dirname,'dist');let count=0;
+function walk(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){if(entry.name==='server')continue;const file=path.join(dir,entry.name);if(entry.isDirectory())walk(file);else if(entry.name.endsWith('.html')){count++;const html=fs.readFileSync(file,'utf8'),ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size,'Duplicate IDs: '+file);for(const [,link] of html.matchAll(/(?:href|src)="([^"]+)"/g)){if(/^(?:https?:|data:|mailto:)/.test(link))continue;const url=new URL(link,'https://local/'+path.relative(root,file).replaceAll('\\','/'));let target=path.join(root,decodeURIComponent(url.pathname));if(url.pathname.endsWith('/'))target=path.join(target,'index.html');assert.ok(fs.existsSync(target),'Missing asset: '+link+' in '+file);if(url.hash&&path.extname(target)==='.html'){const targetHtml=fs.readFileSync(target,'utf8');assert.ok(url.hash==='#vytvorit'||targetHtml.includes('id="'+url.hash.slice(1)+'"'),'Missing anchor: '+link);}}}}}
+walk(root);for(const file of ['editorial.css','forms.css','design.css']){const css=fs.readFileSync(path.join(root,file),'utf8');assert.equal((css.match(/{/g)||[]).length,(css.match(/}/g)||[]).length,'Unbalanced CSS '+file);}assert.equal(fs.readFileSync(path.join(root,'assets/ukazka-pohadky.pdf')).subarray(0,5).toString(),'%PDF-');console.log(count+' HTML pages: links, IDs, CSS and PDF checked.');

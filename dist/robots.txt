@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /objednavka/
+Disallow: /soukrome/
+Sitemap: https://moje-pohadka-kouzelne-omalovanky.lifecore.chatgpt.site/sitemap.xml

@@ -6,12 +6,12 @@ function invalidateCheck() {
   state.checking = false;
   checkController?.abort();
   checkController = null;
-  if (state.step === 2) renderCheckStatus();
+  if (state.step === 3) renderCheckStatus();
 }
 function customerInput() {
   return { child_name:state.name, child_age:state.age, theme:state.theme, custom_theme:state.custom,
     companion_type:state.companion, custom_companion:state.customCompanion, companion_name:state.companionName,
-    appearance_description:state.appearance, personal_wish:state.wish };
+    appearance_description:state.appearance, personal_wish:state.wish, requested_scenes:state.requestedScenes, companion_mode:state.companionMode, companion_id:state.companionId };
 }
 function renderCheckStatus() {
   const node = $('#preflight-status');
@@ -22,14 +22,16 @@ function renderCheckStatus() {
   else if (!result) node.innerHTML = '<p>Zadání zatím není zkontrolované. Před platbou je potřeba schválení serveru.</p>';
   else {
     const titles = {approved:'Zadání prošlo vstupní kontrolou.',blocked:'Zadání je potřeba upravit.',needs_review:'Kontrolu nelze dokončit.'};
-    node.innerHTML = `<strong>${titles[result.status]}</strong><p>${esc(result.message_cs)}</p>${result.suggested_alternative_cs?`<p>Možná alternativa: ${esc(result.suggested_alternative_cs)}. Pokud ji chcete, upravte sami zadání.</p>`:''}${result.field_errors?`<ul>${Object.values(result.field_errors).map(e=>`<li>${esc(e)}</li>`).join('')}</ul>`:''}`;
+    node.innerHTML = `<strong>${esc(result.label_cs || titles[result.status])}</strong><p>${esc(result.message_cs)}</p>${result.suggested_alternative_cs?`<p>Možná alternativa: ${esc(result.suggested_alternative_cs)}. Pokud ji chcete, upravte sami zadání.</p>`:''}${result.field_errors?`<ul>${Object.values(result.field_errors).map(e=>`<li>${esc(e)}</li>`).join('')}</ul>`:''}`;
   }
+  if(result?.checks){const names={technical:'Technická podpora',provider:'Pravidla poskytovatele',rights:'Oprávnění k použití'},values={unknown:'neověřeno',supported:'podporováno',no_obstacle:'bez zjištěné překážky',cleared:'ověřeno',unresolved:'potřebuje upřesnění',restricted:'omezení',unsupported:'nepodporováno',clarification_required:'potřebuje upřesnění'};node.innerHTML+=`<details><summary>Podrobnosti kontroly</summary><div class="check-dimensions">${Object.entries(names).map(([key,label])=>`<div>${label}: ${esc(values[result.checks[key]]||'neověřeno')}</div>`).join('')}</div></details>`;}
   $('#next').disabled = state.checking || result?.status === 'approved';
   $('#next').textContent = state.checking ? 'Probíhá kontrola…' : result?.status === 'approved' ? 'Platby zatím nejsou dostupné' : result ? 'Zkusit kontrolu znovu' : 'Zkontrolovat zadání';
   $('#creator').setAttribute('aria-busy',String(state.checking));
 }
 async function checkOrder() {
   if (state.checking) return;
+  if(window.staticPreview){state.check={status:"needs_review",outcome:"uncertain",can_generate:false,label_cs:"Tvorbu zatím připravujeme",message_cs:"Tento web umožňuje prohlédnout ukázku a sestavit zadání. Serverová kontrola, platby a tvorba vlastního PDF zatím nejsou připojené. Vaše údaje ani fotografie se neodeslaly."};renderCheckStatus();return;}
   const requestId = ++state.requestId;
   const body = new FormData();
   body.set('input',JSON.stringify(customerInput()));

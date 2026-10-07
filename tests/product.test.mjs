@@ -9,7 +9,7 @@ const input={child_name:'Eliška',child_age:4,theme:'Kouzelný les',companion_ty
 const sample=JSON.parse(await readFile(new URL('../spec/sample-page.json',import.meta.url),'utf8'));
 function services(extra={}) {const approvals=new Map();return {provider:'test-provider',orderBudget:80,
   checkProvider:async()=>({available:true,supportsExactSettings:true,estimatedTotalCost:40}),moderate:async()=>({status:'approved'}),
-  findRejection:async()=>null,saveApproval:async a=>approvals.set(a.token,a),loadApproval:async t=>approvals.get(t),...extra};}
+  assessRights:async()=>({status:"cleared"}),recordCheck:async()=>{},findRejection:async()=>null,saveApproval:async a=>approvals.set(a.token,a),loadApproval:async t=>approvals.get(t),...extra};}
 function story(){return {status:'ready',language:'cs',child_age:4,difficulty:'preschool',title_cs:sample.title_cs,characters:[{id:'child'}],pages:Array.from({length:6},(_,i)=>({...structuredClone(sample),title_cs:undefined,page_number:i+1,character_ids:['child'],scene_description_cs:'Dítě ukazuje na květinu.',image_prompt_en:'Black and white child pointing at a large flower.'})).map(({title_cs,...page})=>page)};}
 const png = suffix=>new Blob([new Uint8Array([137,80,78,71,13,10,26,10]),suffix],{type:'image/png'});
 test('known names accepted; server field limits and input normalization',()=>{
@@ -36,10 +36,10 @@ test('budget, availability, moderation and failures prevent approval',async()=>{
  }
  assert.equal((await preflight(input,null,services({moderate:async()=>({status:'blocked'})}))).status,'blocked');
 });
-test('only an exact documented repeated rejection blocks; no global name blacklist',async()=>{
+test('historical rejection never becomes a name blacklist',async()=>{
  const normalized=validateInput(input).input;const key=await fingerprint(normalized,null,'test-provider');
  const rejection={repeated:true,fingerprint:key,provider:'test-provider',model:IMAGE_SETTINGS.model};
- assert.equal((await preflight(input,null,services({findRejection:async()=>rejection}))).status,'blocked');
+ assert.equal((await preflight(input,null,services({findRejection:async()=>rejection}))).status,'approved');
  assert.equal((await preflight(input,null,services({findRejection:async()=>({...rejection,provider:'other'})}))).status,'approved');
  assert.equal((await preflight({...input,custom_companion:'Jiná postava'},null,services({findRejection:async()=>rejection}))).status,'approved');
 });

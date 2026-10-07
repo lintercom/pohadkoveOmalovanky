@@ -1,40 +1,39 @@
-# Moje pohádka
+# Moje pohádka — revize 1.6
 
-Český responzivní web pro příběh se šesti omalovánkami podle specifikace 1.5. Cena produktu je 80 Kč. Výroba a platby dosud nejsou připojené; web tuto skutečnost uvádí a nedovolí zahájit placenou výrobu.
+Existující český web pro šestistránkový příběh s omalovánkami. Revize je místní, bez nasazení nebo push. Platby a personalizovaná výroba nejsou připojené a nelze je spustit z klienta.
 
-## Spuštění a ověření
+## Spuštění
 
-Node.js 22 nebo novější, bez instalace balíčků:
+Node 22+, bez instalace balíčků:
 
 ```sh
-npm run check
 npm run build
+npm run check
 npm start
 ```
 
-Náhled běží na http://127.0.0.1:4173. Build vytvoří Workers kompatibilní `dist/server/index.js` s veřejnými soubory; soukromé prompty, specifikace a testy nejsou veřejnými URL. Manifest zachovává původní Sites projekt. Vygenerovaný server se neukládá do Gitu, vzniká před publikováním.
+Náhled: http://127.0.0.1:4173. Při nefunkčním globálním npm lze spustit přímo `node scripts/build-pages.mjs`, `node scripts/build-worker.cjs`, `node --test tests/*.test.mjs`, `node check-assets.cjs`, `node preview-server.cjs`.
 
-## Chování webu
+## Hotová místní revize
 
-- Formulář pro věk 3–9 let, šest témat a vlastní téma, fotografii nebo popis vzhledu, vlastní či známou postavu nebo osobnost. Jméno kamaráda má limit 60 znaků, vlastní zadání 120.
-- Třetí krok odesílá přesné parametry a případnou fotografii na `POST /api/preflight`. Fotografie se v současné verzi neukládá ani neposílá generativní AI. E-mail se při kontrole neposílá.
-- Server vrací `approved`, `blocked` nebo `needs_review`. Bez skutečných adaptérů poskytovatele, moderace, rozpočtu a úložiště schválení vrátí `needs_review`. Údaje zákazníka nemohou schválit vlastní požadavek.
-- Schválení má 15minutovou platnost a otisk údajů, skutečného souboru, poskytovatele, pravidel a nastavení. Změna zadání schválení zneplatní. Známé jméno samo o sobě není blokováno; opakované odmítnutí se vztahuje jen na konkrétní otisk, poskytovatele a model.
-- `/api/checkout` a `/api/generate` vracejí 503 s vysvětlením chybějícího připojení. Nikdy neúčtují ani negenerují.
-- Ukázka má jeden název příběhu a barevnou frázi v textu, kresba zůstává černobílá. Veřejné PDF je pouze první ukázková strana, nikoli zákaznický sešit.
+- Nový jednoduchý dětský vzhled podle dodaných inspirací: Nunito / DM Sans, krémový podklad, zelená, meruňková, modrá, zaoblení, jemné barevné přechody. Stručná hlavní stránka, informace dále podle potřeby.
+- Kompletní originální ukázka Eliška a kouzelný les: šest navazujících ilustrací, listování, dostupný text a šestistránkové PDF. Ilustrace jsou vytvořené AI, dítě je fiktivní.
+- Lehké CSS animace skutečných obrázků a přechodu stránky, tlačítko pozastavení, reduced-motion. Nejde o video; inspirace obsahovaly obrázky.
+- Čtyřkrokový formulář: dítě, prostředí, parťák, kontrola. Fotografie volitelná. Vyplněné údaje zůstávají při návratu mezi kroky v paměti; obnovení stránky je vymaže.
+- Šest vlastních verzovaných postav s obrázky; vlastní nebo známý parťák; stejně dostupná volba bez parťáka.
+- Čtyři výsledky kontroly a oddělené technické, poskytovatelské a právní hledisko. Žádný historický blacklist jmen ani placené zkušební obrázky.
+- Jedenáct obsahových stránek v počátečním HTML, canonical, sitemap, strukturovaná data WebPage/Breadcrumb, skutečná 404 a přesměrování variant URL.
+- Školní pilot a poptávka přes poštovní aplikaci na petrlavikweb@gmail.com. Web sám e-mail neodesílá; školní cena a licence nejsou schválené.
+- Testovaný serverový základ pro objednávky, idempotentní platby, outbox, jednotlivé pokusy a náklady, zastavení při odmítnutí, soukromé tokeny, expiraci a refundaci. Jde o integrační základ, nikoli živý prodej.
 
-## Výrobní pravidla připravená v kódu
+## Struktura
 
-`server/prompts.mjs` obsahuje přesný hlavní a obrazový prompt ze souboru `spec/Ridici_prompt_6_omalovanek.md`. Zákaznický JSON je oddělen od důvěryhodné developer instrukce. `generation-contract.mjs` připraví zprávy pouze s platným serverovým schválením a ověřenou platbou. Jde o integrační kontrakt, který sám žádnou službu nevolá.
+`content/site.mjs` + `scripts/build-pages.mjs`: zdroje veřejných stránek. `content/dialogs.html`: dialogy. `dist/app.js`, `companion-ui.js`, `preflight.js`, `site.js`, `design.css`: klient. `server/`: soukromá logika. `spec/sample-story.json`, `spec/sample-images/`, `make-sample.py`: šestistránkový vzor. PDF generátor vyžaduje reportlab, pypdf, pypdfium2 a Arial; vloží font a ověří šest stran, jediný název a barevné fráze.
 
-Validátor vyžaduje přesně šest navazujících stran 1–6, jediný kořenový název, délku textu podle věku, platné odkazy na postavy a barevnou frázi z pevné tiskové palety. Blokované výstupy nepředává tvorbě obrázků. Obrazové úlohy mají pevné `model=gpt-image-2`, `quality=medium`, `size=1536x1024`, `n=1`, jeden pokus a skutečné soubory referencí pro edits. Zákaznický text nemění technické parametry; nejsou automatické přechody na high, auto ani jiný model.
+Nastavení ilustrací z dodaného promptu je pevné: gpt-image-2, medium, 1536×1024, n=1, nejvýše jeden pokus na scénu. Dostupnost těchto parametrů musí ověřit skutečný poskytovatel před zapnutím prodeje. Automatický dražší fallback není implementovaný.
 
-Serverové adaptéry jsou důvěryhodné funkce; kontrola dostupnosti nesmí volat generativní AI a odhad nákladů musí zahrnovat celý sešit i reference ve stejné měně jako limit. Při dodatečném připojení je nutné znovu ověřit podporu přesného modelu a parametrů u poskytovatele.
+Podrobnosti: [kontext](docs/PROJECT_CONTEXT.md), [výzkum a rozhodnutí](docs/RESEARCH.md), [ověření](docs/VALIDATION.md), [integrace](docs/INTEGRATIONS.md).
 
-`make-sample.py` sestaví tiskovou ukázku z `spec/sample-page.json`: A4 na šířku, vložený český font, 15bodový text, řádkování 21, jemný panel s odsazením 18 bodů, pevná barva fráze, celý obraz 3:2 bez ořezu. Vyžaduje Python, reportlab, pypdf, Arial a Poppler pro ověřovací náhled.
+## GitHub Pages — nové zadání
 
-## Před spuštěním prodeje
-
-Připojit skutečné adaptéry poskytovatele a moderace, soukromé úložiště schválení a fotografií, platební bránu s ověřenými idempotentními webhooky, frontu šesti ilustrací, kontrolu obrazových promptů a výsledků, sestavení celého PDF a e-mailové doručení. Evidovat požadavky, usage a skutečné náklady každého pokusu. Při nedoručení řešit vrácení platby. Doplnit retenční mazání, identitu provozovatele, kontakty a obchodní i soukromí informace. Bez těchto integrací nejde o provozuschopný prodejní systém.
-
-Design používá knižní sazbu Lora / DM Sans, zelený tisk, meruňkový akcent a jemné přechody žluté, modré a zelené. Ovládací prvky, karty a dialogy mají zaoblené rohy. Úvodní náhled i zvětšená ukázka používají skutečnou stránku PDF v `dist/assets/ukazka-stranky.png`, aby sazba a rozložení odpovídaly staženému dokumentu; `make-sample.py` aktualizuje PDF i tento obrázek současně. Písma se načítají přes Google Fonts. Ukázkové ilustrace vznikly pomocí AI.
+Značka webu je Pohádková omalovánka. Uživatel následně autorizoval zveřejnění na GitHub Pages. `node scripts/build-github-pages.mjs` vytvoří samostatný veřejný export v ignorované složce `pages-dist/`, s cestami pod `/pohadkoveOmalovanky/`, odpovídajícími canonical odkazy a explicitním statickým režimem bez odesílání zákaznického zadání. Publikovat obsah exportu do větve gh-pages, kořen větve. Zdrojový projekt zůstává v main. Adresa: https://lintercom.github.io/pohadkoveOmalovanky/.

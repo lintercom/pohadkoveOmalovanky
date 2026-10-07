@@ -1,0 +1,12 @@
+{
+ "title_cs":"Eliška a kouzelný les","child_age":4,"language":"cs","status":"ready","difficulty":"preschool",
+ "characters":[{"id":"child","name":"Eliška","appearance":"Krátké rovné vlasy, jednoduché laclové šaty a boty."},{"id":"companion","name":"Liška","appearance":"Malá liška s velkýma ušima a bílou špičkou ocasu."}],
+ "pages":[
+ {"page_number":1,"story_text_cs":"Eliška se vydala na procházku do lesa. U velikého stromu potkala malou lišku. „Podívej,“ řekla Eliška a ukázala na oranžovou květinu. Liška se naklonila blíž. Takovou květinu ještě nikdy neviděla.","color_target":{"object_cs":"květinu","color_cs":"oranžovou","color_en":"orange","phrase_cs":"oranžovou květinu"}},
+ {"page_number":2,"story_text_cs":"Květina potřebovala vodu. Eliška s liškou proto došly k potůčku. Po hladině plul žlutý list. „Ten nám ukazuje cestu,“ usmála se Eliška. Liška našla kousek dál malý můstek na druhý břeh.","color_target":{"object_cs":"list","color_cs":"žlutý","color_en":"yellow","phrase_cs":"žlutý list"}},
+ {"page_number":3,"story_text_cs":"U můstku se houpala modrá stuha. Eliška opatrně položila široké prkno přes potůček. „Půjdeme pomalu,“ řekla lišce. Společně přešly potůček. Na druhém břehu už na ně čekalo malé překvapení.","color_target":{"object_cs":"stuha","color_cs":"modrá","color_en":"blue","phrase_cs":"modrá stuha"}},
+ {"page_number":4,"story_text_cs":"Na břehu ležela zelená konvička. Eliška ji zvedla a ukázala lišce. „Tou květinu zalijeme!“ zaradovala se. Liška kývla. Společně nabraly trochu vody a stejnou cestou se vrátily k velikému stromu.","color_target":{"object_cs":"konvička","color_cs":"zelená","color_en":"green","phrase_cs":"zelená konvička"}},
+ {"page_number":5,"story_text_cs":"Eliška pomalu zalévala květinu a liška přihlížela. Vedle květu přistál fialový motýl. Roztáhl veliká křídla, jako by děkoval. „Teď máš dost vody,“ zašeptala Eliška. Květina se narovnala a všichni se usmáli.","color_target":{"object_cs":"motýl","color_cs":"fialový","color_en":"purple","phrase_cs":"fialový motýl"}},
+ {"page_number":6,"story_text_cs":"Pod stromem si Eliška s liškou rozložily malý ubrus. Uprostřed leželo červené jablko. Po výpravě přišla svačina vhod. Eliška se podívala na květinu a pohladila lišku. „Spolu jsme to zvládly,“ řekla spokojeně.","color_target":{"object_cs":"jablko","color_cs":"červené","color_en":"red","phrase_cs":"červené jablko"}}
+ ]
+}

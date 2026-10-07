@@ -7,3 +7,6 @@ node_modules/
 !.env.example
 
 dist/server/
+
+*.log
+pages-dist/
