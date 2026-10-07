@@ -1,12 +1,12 @@
 export const SITE='https://moje-pohadka-kouzelne-omalovanky.lifecore.chatgpt.site';
 export const CONTACT='petrlavikweb@gmail.com';
 export const faqs=[
- ['Co dostanu za 80 Kč?','Jeden český příběh na míru, šest navazujících omalovánek a jedno PDF pro domácí tisk. Jednorázově, bez předplatného.'],
- ['Je fotografie nutná?','Ne. Stačí jméno, věk a krátký popis vzhledu. Fotografie je volitelná a slouží jako inspirace pro kreslenou postavu.'],
- ['Pro jaký věk je příběh?','Pro děti od 3 do 9 let. Nejmenší dostanou kratší text a velké plochy k vybarvení. Celá veřejná ukázka je pro čtyřleté dítě.'],
- ['Jak sešit vytisknu?','Na běžný papír A4, na šířku a jednostranně. PDF si můžete nejprve uložit; vlastní tiskárna není podmínkou objednávky.'],
- ['Mohu už objednat?','Zatím si můžete prohlédnout celý vzor a připravit zadání. Platby a personalizovaná výroba se ještě nepřijímají.'],
- ['Co když tvorba selže po zaplacení?','Připravovaný postup zastaví další pokusy a nabídne upřesnění zadání nebo vrácení platby. Postavu za vás nikdy potichu nevyměníme.']
+ ['Co bude součástí příběhu a kolik stojí?','Připravujeme českou pohádku na míru se šesti navazujícími omalovánkami v jednom PDF za 80 Kč. Půjde o jednorázovou platbu bez předplatného. Vzorový příběh si můžete stáhnout zdarma.'],
+ ['Pro jak staré děti je pohádka určená?','Pro děti od 3 do 9 let. Délka textu i složitost obrázků se přizpůsobí věku. Vzor na této stránce ukazuje příběh pro čtyřleté dítě.'],
+ ['Potřebuji fotografii dítěte?','Ne. Můžete zadat jméno, věk a krátký popis vzhledu. Volitelná fotografie slouží jako inspirace pro kreslenou postavu, nikoli jako předloha k přesnému obkreslení.'],
+ ['Může mít dítě vlastního parťáka?','Ano. Vyberte některého z našich šesti kamarádů, popište vlastního, nebo nechte dítě vyrazit na výpravu samotné.'],
+ ['Jak si omalovánky vytisknu?','Stáhněte PDF a vytiskněte ho na běžný papír A4 na šířku, jednostranně. Zvolte přizpůsobení tisknutelné oblasti. Černobílý tisk stačí; barevný zachová i barevné nápovědy v textu. PDF můžete vytisknout také v copycentru.'],
+ ['Mohu si už nechat vytvořit vlastní příběh?','Zatím si můžete stáhnout vzor zdarma a vyzkoušet přípravu zadání. Platby ani výroba vlastních příběhů ještě nejsou spuštěné.']
 ];
 export const themes=['Kouzelný les','Zvířecí kamarádi','Zatoulaný obláček','Podmořský svět','Vesmír','Dinosauři'];
 export const pages=[
