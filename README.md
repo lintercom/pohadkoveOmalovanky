@@ -6,7 +6,17 @@
 
 `node preview-server.cjs` a otevřít http://127.0.0.1:4173.
 
-Web je statický: `dist/index.html`, `dist/style.css`, `dist/app.js` a `dist/assets/`.
+Web je statický: `dist/index.html`, `dist/editorial.css`, `dist/forms.css`, `dist/app.js` a `dist/assets/`. Nepotřebuje instalaci závislostí ani sestavení; publikovat lze celý obsah `dist/`.
+
+## Design
+
+Knižní sazba Lora / DM Sans, tmavě zelený tisk, cihlový akcent a světlý papír. Úvod ukazuje skutečnou omalovánku. Číslované kapitoly a jednoduché linky nahrazují pastelové karty, emoji a plovoucí dekorace. Formulář, ukázka i mobilní zobrazení používají stejný vizuální styl.
+
+Písma se načítají přes Google Fonts. Ukázkové obrázky vznikly pomocí AI; změna designu nepředstavuje jejich označení za ručně kreslené.
+
+## Kontrola
+
+`npm run check` ověří syntaxi skriptů a lokální odkazy na soubory. `npm start` spustí náhled. Node.js 18 nebo novější, bez dalších balíčků.
 
 ## Hotové funkce
 
