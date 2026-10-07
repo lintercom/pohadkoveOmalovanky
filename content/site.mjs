@@ -4,7 +4,7 @@ export const faqs=[
  ['Co bude součástí příběhu a kolik stojí?','Připravujeme českou pohádku na míru se šesti navazujícími omalovánkami v jednom PDF za 80 Kč. Půjde o jednorázovou platbu bez předplatného. Vzorový příběh si můžete stáhnout zdarma.'],
  ['Pro jak staré děti je pohádka určená?','Pro děti od 3 do 9 let. Délka textu i složitost obrázků se přizpůsobí věku. Vzor na této stránce ukazuje příběh pro čtyřleté dítě.'],
  ['Potřebuji fotografii dítěte?','Ne. Můžete zadat jméno, věk a krátký popis vzhledu. Volitelná fotografie slouží jako inspirace pro kreslenou postavu, nikoli jako předloha k přesnému obkreslení.'],
- ['Může mít dítě vlastního parťáka?','Ano. Vyberte některého z našich šesti kamarádů, popište vlastního, nebo nechte dítě vyrazit na výpravu samotné.'],
+ ['Může mít dítě vlastního parťáka?','Ano. Vyberte některého z našich kamarádů, popište vlastního, nebo nechte dítě vyrazit na výpravu samotné.'],
  ['Jak si omalovánky vytisknu?','Stáhněte PDF a vytiskněte ho na běžný papír A4 na šířku, jednostranně. Zvolte přizpůsobení tisknutelné oblasti. Černobílý tisk stačí; barevný zachová i barevné nápovědy v textu. PDF můžete vytisknout také v copycentru.'],
  ['Mohu si už nechat vytvořit vlastní příběh?','Zatím si můžete stáhnout vzor zdarma a vyzkoušet přípravu zadání. Platby ani výroba vlastních příběhů ještě nejsou spuštěné.']
 ];

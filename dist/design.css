@@ -51,3 +51,5 @@ body.motion-paused *{animation-play-state:paused!important}
 body.motion-paused .public-companions article{transition:none}
 body.motion-paused .public-companions article:hover{transform:none}
 .public-companions article{cursor:pointer}
+
+.companion-art-single{background-image:none;object-fit:contain;height:auto}
