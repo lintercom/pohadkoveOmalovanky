@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /objednavka/
+Disallow: /soukrome/
+Sitemap: https://lintercom.github.io/pohadkoveOmalovanky/sitemap.xml
