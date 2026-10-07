@@ -50,5 +50,6 @@ assert page['title_cs'] in doc.pages[0].extract_text()
 assert target['phrase_cs'] in doc.pages[0].extract_text()
 (root/'qa').mkdir(exist_ok=True)
 poppler = shutil.which('pdftoppm') or 'C:/Users/573/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/Library/bin/pdftoppm.exe'
-subprocess.run([poppler,'-scale-to','1200','-singlefile','-png',str(pdf),str(root/'qa/sample-pdf')],check=True)
+subprocess.run([poppler,'-scale-to','1600','-singlefile','-png',str(pdf),str(root/'qa/sample-pdf')],check=True)
+shutil.copyfile(root/'qa/sample-pdf.png',root/'dist/assets/ukazka-stranky.png')
 print('Verified: landscape A4, one sample page, Czech title and color phrase.')
