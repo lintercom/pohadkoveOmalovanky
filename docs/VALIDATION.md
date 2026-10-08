@@ -49,3 +49,9 @@ Odstraněna samostatná ukázková sekce; všech šest stran a PDF jsou v existu
 ## Logo v levém dolním rohu PDF — 8. 10. 2026
 
 Logo přesunuto ze záhlaví první strany do levého dolního rohu všech šesti stran. Dvouřádkový slovní znak s tříbarevným podtržením nahrazuje původní jednořádkový podpis. Znovu vyrenderováno a vizuálně prohlédnuto všech šest stran bez překrytí kresby. Extrakce PDF ověřila právě jeden výskyt obou řádků loga na každé straně a jeho souřadnice vlevo dole. Velikost a umístění ilustrací, obsah textů a barevné fráze zachovány. Stejné umístění ukládá také společná grafická instrukce pro ruční/API sestavovač.
+
+## Klikatelná cesta tvorbou s AI — 8. 10. 2026
+
+Sekce postupu přepracována na čtyři přístupné záložky s číslovanou propojenou cestou, stručným přehledem všech kroků a návody/CTA pod zvoleným krokem. Značka, barvy, zaoblení a typografie navazují na web; mobilní pravidla používají mřížku 2 × 2 bez posouvání. Obsah odpovídá skutečnému ručnímu režimu: formulář → kopírování promptu → ChatGPT s dostupnými nástroji → PDF a tisk. Přiznává chybějící automatickou výrobu a platby, zmiňuje oddělené přiložení fotografie; nezavádí placené AI volání. Sjednocena pouze související odpověď FAQ o dostupnosti.
+
+35 automatických testů prošlo. Nové testy ověřují všechny čtyři kroky, funkční cíle odkazů, vazby aria-selected/tabpanel, jediné aktivní pole, klikání, klávesové šipky, Home/End a roving tabindex. Syntaxe nového JS, odkazy, ID, CSS a PDF prošly; Worker má 49 veřejných souborů. Jde o kontrolu kódu a DOM simulaci, nikoli novou browser QA nebo měření reálné AI výroby. Konfigurátor, vzorové PDF a ilustrace se touto změnou nemění.

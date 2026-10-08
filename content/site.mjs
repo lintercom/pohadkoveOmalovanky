@@ -6,7 +6,7 @@ export const faqs=[
  ['Potřebuji fotografii dítěte?','Ne. Můžete zadat jméno, věk a krátký popis vzhledu. Volitelná fotografie slouží jako inspirace pro kreslenou postavu, nikoli jako předloha k přesnému obkreslení.'],
  ['Může mít dítě vlastního parťáka?','Ano. Vyberte některého z našich kamarádů, popište vlastního, nebo nechte dítě vyrazit na výpravu samotné.'],
  ['Jak si omalovánky vytisknu?','Stáhněte PDF a vytiskněte ho na běžný papír A4 na šířku, jednostranně. Zvolte přizpůsobení tisknutelné oblasti. Černobílý tisk stačí; barevný zachová i barevné nápovědy v textu. PDF můžete vytisknout také v copycentru.'],
- ['Mohu si už nechat vytvořit vlastní příběh?','Zatím si můžete stáhnout vzor zdarma a vyzkoušet přípravu zadání. Platby ani výroba vlastních příběhů ještě nejsou spuštěné.']
+ ['Mohu si už nechat vytvořit vlastní příběh?','Ano, ručně přes ChatGPT. U nás zdarma připravíte a zkopírujete zadání, které vložíte do ChatGPT s dostupnou tvorbou obrázků a souborů. Fotografii přiložte zvlášť. Automatická výroba přímo na webu ani platby zatím nejsou spuštěné.']
 ];
 export const themes=['Kouzelný les','Zvířecí kamarádi','Zatoulaný obláček','Podmořský svět','Vesmír','Dinosauři'];
 export const pages=[
