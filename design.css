@@ -90,7 +90,7 @@ body.motion-paused .public-companions article:hover{transform:none}
 .journey-label strong{font:800 23px/1.25 var(--heading);letter-spacing:-.5px}.journey-short{font-size:14px;line-height:1.5;color:var(--muted)}
 .journey-plus{flex:0 0 25px;text-align:center;font:400 26px/1 var(--body);color:var(--accent);transition:transform .18s}.journey-bubble[open] .journey-plus{transform:rotate(45deg)}
 .journey-detail{padding:0 28px 26px}.journey-detail>p:first-child{padding-top:18px;border-top:1px solid var(--line);font-size:15px;line-height:1.75;margin:0 0 20px}.journey-detail .button{display:inline-flex;white-space:normal;text-align:center;font-size:14px;padding:13px 21px}.journey-note{font-size:12px;line-height:1.6;margin:16px 0 0;color:var(--muted)}
-.journey-art{position:absolute;right:10px;top:5px;width:170px;height:170px;object-fit:contain;pointer-events:none}.journey-book{right:0;top:0;width:185px;height:185px;transform:rotate(7deg)}
+.journey-art{position:absolute;right:10px;top:5px;width:170px;height:170px;object-fit:contain;pointer-events:none}.journey-pencils{left:10px;right:auto}.journey-book{right:0;top:0;width:185px;height:185px;transform:rotate(7deg)}
 .journey-finish{text-align:center;max-width:650px;margin:36px auto 0}.journey-current{font-size:13px;line-height:1.7;margin-top:22px;color:var(--muted)}
 @media(max-width:700px){.creation-journey{padding-block:46px 24px}.journey-heading{margin-bottom:30px}.journey-heading h2{font-size:34px}.journey-heading>p:not(.eyebrow){font-size:15px}.journey-trail{max-width:500px}.journey-bubble{width:calc(100% - 18px);max-width:none;border-radius:26px 30px 25px 29px}.journey-stop{padding-bottom:44px}.journey-bubble summary{gap:12px;padding:20px 16px;min-height:116px}.journey-marker{flex-basis:42px;height:46px;font-size:22px;border-radius:16px 20px 17px 19px}.journey-label strong{font-size:20px}.journey-short{font-size:12px}.journey-plus{flex-basis:18px;font-size:23px}.journey-detail{padding:0 20px 22px}.journey-art{display:none}.journey-finish{margin-top:28px}.journey-line path{stroke-width:4}}
 @media(prefers-reduced-motion:reduce){.journey-bubble summary,.journey-plus{transition:none}}
@@ -111,3 +111,12 @@ body{position:relative;isolation:isolate}
 body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:url('/pohadkoveOmalovanky/assets/background/story-doodles-v1.webp');background-repeat:repeat;background-size:560px 560px;opacity:.24;mask-image:radial-gradient(ellipse 48% 32% at 3% 20%,#000 5%,transparent 100%),radial-gradient(ellipse 43% 35% at 98% 73%,#000 8%,transparent 100%);mask-size:100% 1400px;mask-repeat:repeat-y;-webkit-mask-image:radial-gradient(ellipse 48% 32% at 3% 20%,#000 5%,transparent 100%),radial-gradient(ellipse 43% 35% at 98% 73%,#000 8%,transparent 100%);-webkit-mask-size:100% 1400px;-webkit-mask-repeat:repeat-y}
 @media(max-width:600px){body::before{background-size:420px 420px;opacity:.19;mask-size:100% 1100px;-webkit-mask-size:100% 1100px}}
 @media print{body::before{display:none}}
+
+/* Two calm coloring scenes occupy the broad page margins only. */
+.creation-journey,.faq{position:relative}
+.margin-scene{display:block;position:absolute;left:calc((100% - 100vw)/2 + 32px);width:clamp(130px,calc((100vw - 940px)/2 - 36px),310px);height:auto;aspect-ratio:1;object-fit:contain;opacity:.72;filter:grayscale(1);mix-blend-mode:multiply;pointer-events:none;user-select:none}
+.margin-scene-space{top:220px;transform:rotate(-3deg)}
+.margin-scene-forest{top:160px;transform:rotate(2deg)}
+.margin-scene-children{left:auto;right:calc((100% - 100vw)/2 + 32px);top:auto;bottom:12px;transform:rotate(2deg)}
+@media(max-width:1199px){.margin-scene{display:none}}
+@media print{.margin-scene{display:none}}
