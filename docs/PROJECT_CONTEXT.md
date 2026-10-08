@@ -33,3 +33,7 @@ Skutečný poskytovatel, platby a automatický vizuální hodnotitel nejsou při
 Nepoužívané staré šablony, duplicitní sample-page, globální catalog-data, neodkazované staré náhledy a místní QA/log artefakty byly odstraněny. Zachovat zdroje, testy, používané ilustrace, PDF a Git historii. Neuklízet cizí projekt ani vnořené .git exportu pages-dist.
 
 Kontakt je petrlavikweb@gmail.com. Identita provozovatele a obchodní podmínky stále chybí. Nejsou naměřené konverze, hledanost, CWV ani skutečné výrobní náklady. Podrobnosti integrací: INTEGRATIONS.md, historie ověření: VALIDATION.md.
+
+
+## Svislá pohádková cesta — 8. 10. 2026
+Aktuální sekce Jak to funguje nahrazuje záložky čtyřmi nativními details/summary bublinami podél jemně klikaté linky. Vysvětlení a CTA jsou uvnitř konkrétního kroku; více kroků lze otevřít současně i bez JS. journey.js pouze přizpůsobuje dekorativní křivku změnám velikosti, fontů a rozbalení. Mobil používá jeden sloupec s malým střídavým odsazením. Dvě nové transparentní ilustrace v assets/journey; záznam generování v docs/JOURNEY_ART.md. Skutečný ruční postup i ostatní části webu zachovány.

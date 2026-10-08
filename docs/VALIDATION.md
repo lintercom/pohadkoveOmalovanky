@@ -55,3 +55,7 @@ Logo přesunuto ze záhlaví první strany do levého dolního rohu všech šest
 Sekce postupu přepracována na čtyři přístupné záložky s číslovanou propojenou cestou, stručným přehledem všech kroků a návody/CTA pod zvoleným krokem. Značka, barvy, zaoblení a typografie navazují na web; mobilní pravidla používají mřížku 2 × 2 bez posouvání. Obsah odpovídá skutečnému ručnímu režimu: formulář → kopírování promptu → ChatGPT s dostupnými nástroji → PDF a tisk. Přiznává chybějící automatickou výrobu a platby, zmiňuje oddělené přiložení fotografie; nezavádí placené AI volání. Sjednocena pouze související odpověď FAQ o dostupnosti.
 
 35 automatických testů prošlo. Nové testy ověřují všechny čtyři kroky, funkční cíle odkazů, vazby aria-selected/tabpanel, jediné aktivní pole, klikání, klávesové šipky, Home/End a roving tabindex. Syntaxe nového JS, odkazy, ID, CSS a PDF prošly; Worker má 49 veřejných souborů. Jde o kontrolu kódu a DOM simulaci, nikoli novou browser QA nebo měření reálné AI výroby. Konfigurátor, vzorové PDF a ilustrace se touto změnou nemění.
+
+
+## Svislá cesta a rozbalovací bubliny — 8. 10. 2026
+35 automatických testů prošlo. Testy nové sekce ověřují čtyři nativní rozbalovací kroky s vlastními odkazy a vysvětlením, pravdivý ruční postup, a v DOM simulaci přepočet křivky po rozbalení a při šířce 320 px. Interakce používá nativní summary (klávesnice i bez JS), respektuje reduced-motion. Obrázky vizuálně prohlédnuty a exportovány s průhledností. Jde o kontrolu kódu a simulaci, nikoli novou vizuální browser QA.
