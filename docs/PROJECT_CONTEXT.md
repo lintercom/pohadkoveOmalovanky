@@ -53,3 +53,7 @@ Sdílené béžové pozadí všech stránek doplňuje transparentní vzor assets
 
 ## Zákaznické texty popisují tvorbu na webu — 8. 10. 2026
 Na výslovné přání uživatele homepage popisuje cílový postup zadání → kontrola → AI tvorba na webu → stažení PDF. Cesta ani FAQ neodkazují na ChatGPT a neoznačují web za zkušební. Odstraněna související zmínka o současné verzi na stránce o fotografii. Jde o zákaznické texty; kopírování promptu v konfigurátoru a skutečné stavy nezapojených kontrol/plateb zůstávají pro vývoj zachovány. Změna neimplementuje placenou výrobu ani platby.
+
+
+## Omalovánkové scény v levých okrajích — 8. 10. 2026
+Nová transparentní scéna chlapečka s Blikem ve vesmíru vlevo u cesty a holčičky s Jiskrou v kouzelném lese vlevo u FAQ. Tmavě šedé linky zjemněné CSS opacity .72, dekorativní obrázky mimo přístupný obsah. Absolutně umístěné do volného levého okraje; pod 1200 px a v tisku skryté. Kontrola geometrie pro šířky 1200–1920 px ověřila odstup od obsahu. Čtyři související testy prošly, nejde o browser QA. Prompty a zdroje v docs/MARGIN_SCENES_ART.md.

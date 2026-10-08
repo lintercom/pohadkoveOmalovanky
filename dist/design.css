@@ -111,3 +111,11 @@ body{position:relative;isolation:isolate}
 body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:url('/assets/background/story-doodles-v1.webp');background-repeat:repeat;background-size:560px 560px;opacity:.24;mask-image:radial-gradient(ellipse 48% 32% at 3% 20%,#000 5%,transparent 100%),radial-gradient(ellipse 43% 35% at 98% 73%,#000 8%,transparent 100%);mask-size:100% 1400px;mask-repeat:repeat-y;-webkit-mask-image:radial-gradient(ellipse 48% 32% at 3% 20%,#000 5%,transparent 100%),radial-gradient(ellipse 43% 35% at 98% 73%,#000 8%,transparent 100%);-webkit-mask-size:100% 1400px;-webkit-mask-repeat:repeat-y}
 @media(max-width:600px){body::before{background-size:420px 420px;opacity:.19;mask-size:100% 1100px;-webkit-mask-size:100% 1100px}}
 @media print{body::before{display:none}}
+
+/* Two calm coloring scenes occupy the broad page margins only. */
+.creation-journey,.faq{position:relative}
+.margin-scene{display:block;position:absolute;left:calc((100% - 100vw)/2 + 32px);width:clamp(130px,calc((100vw - 940px)/2 - 36px),310px);height:auto;aspect-ratio:1;object-fit:contain;opacity:.72;mix-blend-mode:multiply;pointer-events:none;user-select:none}
+.margin-scene-space{top:220px;transform:rotate(-3deg)}
+.margin-scene-forest{top:160px;transform:rotate(2deg)}
+@media(max-width:1199px){.margin-scene{display:none}}
+@media print{.margin-scene{display:none}}
