@@ -49,3 +49,7 @@ Na přání uživatele odstraněny hero štítky věku/PDF, hero textový odkaz 
 
 ## Jemné čmáranicové pozadí — 8. 10. 2026
 Sdílené béžové pozadí všech stránek doplňuje transparentní vzor assets/background/story-doodles-v1.webp inspirovaný referencí uživatele. Dekorativní body::before je za obsahem, nebere vstup a neovlivňuje rozměry. Dvě měkké opakované radiální masky nechávají motivy lokálně vystupovat u okrajů a mizet směrem do stránky. Na mobilu menší a slabší, v tisku vypnuté. Karty a dialogy zachovávají neprůhledný podklad. Záznam obrázku v docs/BACKGROUND_ART.md.
+
+
+## Zákaznické texty popisují tvorbu na webu — 8. 10. 2026
+Na výslovné přání uživatele homepage popisuje cílový postup zadání → kontrola → AI tvorba na webu → stažení PDF. Cesta ani FAQ neodkazují na ChatGPT a neoznačují web za zkušební. Odstraněna související zmínka o současné verzi na stránce o fotografii. Jde o zákaznické texty; kopírování promptu v konfigurátoru a skutečné stavy nezapojených kontrol/plateb zůstávají pro vývoj zachovány. Změna neimplementuje placenou výrobu ani platby.
