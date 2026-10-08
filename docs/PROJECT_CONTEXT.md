@@ -57,3 +57,7 @@ Na výslovné přání uživatele homepage popisuje cílový postup zadání →
 
 ## Omalovánkové scény v levých okrajích — 8. 10. 2026
 Nová transparentní scéna chlapečka s Blikem ve vesmíru vlevo u cesty a holčičky s Jiskrou v kouzelném lese vlevo u FAQ. Tmavě šedé linky zjemněné CSS opacity .72, dekorativní obrázky mimo přístupný obsah. Absolutně umístěné do volného levého okraje; pod 1200 px a v tisku skryté. Kontrola geometrie pro šířky 1200–1920 px ověřila odstup od obsahu. Čtyři související testy prošly, nejde o browser QA. Prompty a zdroje v docs/MARGIN_SCENES_ART.md.
+
+
+## Čisté obrysy a třetí scéna — 8. 10. 2026
+Obě okrajové scény nahrazeny novými v2 obrázky upravenými imagegen: bez bledě modrých či bílých výplní, s průhlednými vnitřními plochami a šedými obrysy. CSS grayscale(1) neutralizuje i zbytkové barevné okrajové pixely. Nová scéna chlapečka a holčičky v kouzelném lese je vpravo u spodního konce cesty nad výzvou. Stejná responzivní pravidla (skryté pod 1200 px) a opacity .72. Čtyři související testy i kontrola pravého okraje prošly; nejde o browser QA. Generační podklady v docs/OUTLINE_SCENES_V2.md.
