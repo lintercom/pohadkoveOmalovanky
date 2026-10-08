@@ -1,5 +1,6 @@
 import { PRODUCT, IMAGE_SETTINGS } from './product.mjs';
 import { requireApproval } from './preflight.mjs';
+import { IMAGE_REVIEW_PROMPT } from './prompts.mjs';
 const hash=async value=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)))].map(n=>n.toString(16).padStart(2,'0')).join('');
 const terminal=new Set(['ready','needs_action','refund_pending','refunded','payment_failed','expired']);
 const channels=new Set(['direct','organic','paid_search','social','partner','other']);
@@ -52,20 +53,32 @@ export function createOrderEngine({store,preflightServices,provider,clock=Date.n
      });if(!reservation)continue;
      // Actual provider calls belong to configured adapters. A timeout leaves the
      // recorded attempt uncertain and is never automatically paid again.
-     const receipt=await adapters.execute({orderId:id,stage,idempotencyKey:reservation.id,imageSettings:IMAGE_SETTINGS});
+     const verifiedImages=change(id,o=>Object.entries(o.attempts).filter(([key,a])=>key.startsWith('image:')&&a.visualReview?.passed===true).map(([key,a])=>({pageNumber:Number(key.split(':')[1]),outputKey:a.outputKey})));
+     const receipt=await adapters.execute({orderId:id,stage,idempotencyKey:reservation.id,imageSettings:IMAGE_SETTINGS,verifiedImages,reviewInstructions:IMAGE_REVIEW_PROMPT});
      const stop=change(id,o=>{
       if(o.leaseId!==leaseId)throw Error('LEASE_LOST');const a=o.attempts[stage];
       if(!receipt||!Number.isFinite(receipt.costCzk)||receipt.costCzk<0||!receipt.requestId||!receipt.outputKey)throw Error('INVALID_COST_RECEIPT');
       a.status='complete';a.requestId=receipt.requestId;a.usage=Object.fromEntries(Object.entries(receipt.usage||{}).filter(([k,v])=>['input_tokens','output_tokens','total_tokens'].includes(k)&&Number.isFinite(v)&&v>=0));a.costCzk=receipt.costCzk;a.outputKey=receipt.outputKey;a.completedAt=clock();o.costCzk+=receipt.costCzk;o.reservedCzk-=a.estimate;o.completed.push(stage);
       if(o.status!=='generating'||o.leaseUntil<=clock())return 'LEASE_LOST';
       if(o.costCzk>o.budgetCzk)return 'BUDGET_EXCEEDED';
-      if(stage==='pdf'){if(receipt.verifiedPages!==6)return 'INVALID_PDF';o.pdfKey=receipt.outputKey;}
+      if(stage.startsWith('image:')){
+       const review=receipt.visualReview;
+       if(review?.outputKey!==receipt.outputKey||review.passed!==true||['matchesText','consistentIdentity','consistentEquipment','worldRules','coloringStyle'].some(key=>review[key]!==true))return 'IMAGE_REVIEW_REQUIRED';
+       a.visualReview={passed:true};
+      }
+      if(stage==='pdf'){
+       if(receipt.verifiedPages!==6)return 'INVALID_PDF';
+       const review=receipt.illustrationsReview,pdf=receipt.pdfReview,keys=verifiedImages.map(image=>image.outputKey);
+       if(keys.length!==6||review?.passed!==true||review.distinctScenes!==true||review.consistentIdentityAndEquipment!==true||!Array.isArray(review.outputKeys)||review.outputKeys.length!==6||new Set(review.outputKeys).size!==6||keys.some(key=>!review.outputKeys.includes(key)))return 'ILLUSTRATIONS_REVIEW_REQUIRED';
+       if(pdf?.outputKey!==receipt.outputKey||pdf.passed!==true||['sixPages','singleTitle','visibleContent','correctColorPhrases','embeddedCzechFont','noUnintendedCropping'].some(key=>pdf[key]!==true))return 'PDF_REVIEW_REQUIRED';
+       a.pdfReviewed=true;o.pdfKey=receipt.outputKey;
+      }
       return null;
      });
      if(stop)throw Error(stop);
     }
     change(id,(o,s)=>{if(o.status!=='generating'||o.leaseId!==leaseId||o.leaseUntil<=clock())throw Error('LEASE_LOST');o.status='ready';o.outbox=false;o.leaseUntil=0;event(s,o,'generation_ready');});return {status:'ready'};
-   }catch(error){change(id,(o,s)=>{if(o.leaseId!==leaseId)return;o.status='needs_action';o.outbox=false;o.leaseUntil=0;o.reason=['PROVIDER_REFUSED','BUDGET_LIMIT','BUDGET_EXCEEDED','INVALID_PDF'].includes(error.code||error.message)?(error.code||error.message):'CHECK_REQUIRED';event(s,o,'failed');s.audit.push({orderId:id,reason:o.reason,provider,rulesVersion:PRODUCT.rulesVersion,at:clock()});});return {status:'needs_action'};}
+   }catch(error){change(id,(o,s)=>{if(o.leaseId!==leaseId)return;o.status='needs_action';o.outbox=false;o.leaseUntil=0;o.reason=['PROVIDER_REFUSED','BUDGET_LIMIT','BUDGET_EXCEEDED','INVALID_PDF','IMAGE_REVIEW_REQUIRED','ILLUSTRATIONS_REVIEW_REQUIRED','PDF_REVIEW_REQUIRED'].includes(error.code||error.message)?(error.code||error.message):'CHECK_REQUIRED';event(s,o,'failed');s.audit.push({orderId:id,reason:o.reason,provider,rulesVersion:PRODUCT.rulesVersion,at:clock()});});return {status:'needs_action'};}
   },
   async requestRefund(id,token){await this.status(id,token);return change(id,o=>{if(o.status==='refund_pending'||o.status==='refunded')return {status:o.status};if(o.status!=='needs_action')throw Error('REFUND_NOT_AVAILABLE');o.status='refund_pending';o.refundKey='refund:'+o.id;return {status:o.status,idempotencyKey:o.refundKey};});},
   confirmRefund(id,providerRefundId){if(!providerRefundId)throw Error('REFUND_NOT_VERIFIED');return change(id,(o,s)=>{if(o.status==='refunded')return;if(o.status!=='refund_pending')throw Error('INVALID_REFUND_STATE');o.refundId=providerRefundId;o.status='refunded';event(s,o,'refund');});},

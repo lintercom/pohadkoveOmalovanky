@@ -1,8 +1,8 @@
-# Moje pohádka — revize 1.6
+# Pohádkové omalovánky
 
-Existující český web pro šestistránkový příběh s omalovánkami. Revize je místní, bez nasazení nebo push. Platby a personalizovaná výroba nejsou připojené a nelze je spustit z klienta.
+Český web pro personalizovaný příběh se šesti omalovánkami. Běží jako Sites web; platby a placená AI výroba zatím nejsou připojené. Konfigurátor na `/vytvorit/` umožňuje bez platby sestavit a zkopírovat úplné zadání pro ruční vytvoření sešitu v ChatGPT.
 
-## Spuštění
+## Spuštění a ověření
 
 Node 22+, bez instalace balíčků:
 
@@ -12,32 +12,26 @@ npm run check
 npm start
 ```
 
-Náhled: http://127.0.0.1:4173. Při nefunkčním globálním npm lze spustit přímo `node scripts/build-pages.mjs`, `node scripts/build-worker.cjs`, `node --test tests/*.test.mjs`, `node check-assets.cjs`, `node preview-server.cjs`.
+Lokální náhled: http://127.0.0.1:4173. Build sestaví aktuální prompty, HTML stránky a Worker. Kontroly ověřují odkazy, assety a 30 scénářů bez placených API.
 
-## Hotová místní revize
+## Zdroj řídícího promptu
 
-- Nový jednoduchý dětský vzhled podle dodaných inspirací: Nunito / DM Sans, krémový podklad, zelená, meruňková, modrá, zaoblení, jemné barevné přechody. Stručná hlavní stránka, informace dále podle potřeby.
-- Kompletní originální ukázka Eliška a kouzelný les: šest navazujících ilustrací, listování, dostupný text a šestistránkové PDF. Ilustrace jsou vytvořené AI, dítě je fiktivní.
-- Lehké CSS animace skutečných obrázků a přechodu stránky, tlačítko pozastavení, reduced-motion. Nejde o video; inspirace obsahovaly obrázky.
-- Čtyřkrokový formulář: dítě, prostředí, parťák, kontrola. Fotografie volitelná. Vyplněné údaje zůstávají při návratu mezi kroky v paměti; obnovení stránky je vymaže.
-- Šest vlastních verzovaných postav s obrázky; vlastní nebo známý parťák; stejně dostupná volba bez parťáka.
-- Čtyři výsledky kontroly a oddělené technické, poskytovatelské a právní hledisko. Žádný historický blacklist jmen ani placené zkušební obrázky.
-- Jedenáct obsahových stránek v počátečním HTML, canonical, sitemap, strukturovaná data WebPage/Breadcrumb, skutečná 404 a přesměrování variant URL.
-- Školní pilot a poptávka přes poštovní aplikaci na petrlavikweb@gmail.com. Web sám e-mail neodesílá; školní cena a licence nejsou schválené.
-- Testovaný serverový základ pro objednávky, idempotentní platby, outbox, jednotlivé pokusy a náklady, zastavení při odmítnutí, soukromé tokeny, expiraci a refundaci. Jde o integrační základ, nikoli živý prodej.
+Jediný aktuální dokument je [Ridici_prompt_6_omalovanek_v1_6.md](spec/Ridici_prompt_6_omalovanek_v1_6.md), přesná kopie dodaná uživatelem. `scripts/build-prompts.mjs` z něj sestaví `server/prompts.mjs`; generované kopie neupravovat ručně. `shared/story-brief.mjs` vytváří zadání pro náhled, schránku i budoucí API. Kopírovaný prompt obsahuje výslovný ruční režim, produkce zachovává serverové schválení a ověření platby. Fotografie se v ChatGPT přikládá samostatně.
 
-## Struktura
+Verze 1.6 obsahuje pravidla světa, plán šesti odlišných scén, invarianty konstrukce a stavy postav a vybavení. JSON Schema a serverová validace jsou v `server/story-schema.mjs` a `server/product.mjs`. Obrazové vstupy předávají relevantní pravidla a stavy bez celého zákaznického formuláře. Pevné požadované nastavení: gpt-image-2, medium, 1536×1024, n=1, jeden pokus na scénu. Jeho dostupnost musí ověřit skutečný poskytovatel; úprava promptu sama nic negeneruje.
 
-`content/site.mjs` + `scripts/build-pages.mjs`: zdroje veřejných stránek. `content/dialogs.html`: dialogy. `dist/app.js`, `companion-ui.js`, `preflight.js`, `site.js`, `design.css`: klient. `server/`: soukromá logika. `spec/sample-story.json`, `spec/sample-images/`, `make-sample.py`: šestistránkový vzor. PDF generátor vyžaduje reportlab, pypdf, pypdfium2 a Arial; vloží font a ověří šest stran, jediný název a barevné fráze.
+## Struktura a provoz
 
-Nastavení ilustrací z dodaného promptu je pevné: gpt-image-2, medium, 1536×1024, n=1, nejvýše jeden pokus na scénu. Dostupnost těchto parametrů musí ověřit skutečný poskytovatel před zapnutím prodeje. Automatický dražší fallback není implementovaný.
+- `content/`, `scripts/build-pages.mjs`: zdroje stránek, metadata a konfigurátor.
+- `dist/configurator.mjs`, `dist/app.js`, `dist/site.js`, CSS a assety: klient; `dist/runtime/` je generovaný veřejný runtime.
+- `server/`, `shared/`: validace, předběžná kontrola, zadání, připravený objednávkový proces a Worker.
+- `spec/sample-story.json`, `spec/sample-images/`, `make-sample.py`: zdroje kompletního veřejného vzoru. Je to hotová statická ukázka, nikoli automatický generátor zákaznických objednávek.
+- `tests/`: testy a explicitní syntetické fixture adaptéry, bez placených API.
 
-Podrobnosti: [kontext](docs/PROJECT_CONTEXT.md), [výzkum a rozhodnutí](docs/RESEARCH.md), [ověření](docs/VALIDATION.md), [integrace](docs/INTEGRATIONS.md).
+Serverový základ zaznamenává pokusy a náklady, zastaví chybu bez automatického opakování a vyžaduje doklady skutečné vizuální kontroly obrázků, celé sady i PDF před doručením. Samotný textový plán ready není hotový produkt. Vizuální kontrolu musí zajistit připojený adaptér nebo obsluha; dosud nejde o běžící automatický hodnotitel.
 
-## GitHub Pages — nové zadání
+Existující soukromý web se aktualizuje přes Sites. `scripts/build-github-pages.mjs` připraví samostatný statický export pro `/pohadkoveOmalovanky/`; nasazení GitHub Pages je oddělený krok. Git metadata tohoto exportu se při úklidu nemažou.
 
-Značka webu je Pohádková omalovánka. Uživatel následně autorizoval zveřejnění na GitHub Pages. `node scripts/build-github-pages.mjs` vytvoří samostatný veřejný export v ignorované složce `pages-dist/`, s cestami pod `/pohadkoveOmalovanky/`, odpovídajícími canonical odkazy a explicitním statickým režimem bez odesílání zákaznického zadání. Publikovat obsah exportu do větve gh-pages, kořen větve. Zdrojový projekt zůstává v main. Adresa: https://lintercom.github.io/pohadkoveOmalovanky/.
+Zachovaný vzhled: Nunito / DM Sans, jemné dětské barvy, zaoblené karty a decentní animace s reduced-motion. Homepage nabízí všech šest stran vzoru a PDF. Osm originálních parťáků, vlastní parťák i svět a varianta bez parťáka jsou v samostatném konfigurátoru. Předběžná kontrola neslibuje úspěch generování ani komerční oprávnění.
 
-## Konfigurátor 8. 10. 2026
-
-Aktuální formulář je na `/vytvorit/`, všechny parametry na jedné stránce. Je noindex. Kontrolní modál umožňuje sestavit, zobrazit a zdarma zkopírovat úplný samostatný prompt pro ChatGPT; fotografii je nutné přiložit zvlášť. Společný sestavovač: `shared/story-brief.mjs`. Serverová kontrola a placené služby nejsou připojené; modál to výslovně uvádí. Podrobnosti a ověření: `docs/CONFIGURATOR.md`. Dřívější popis čtyř kroků je tímto nahrazen.
+Podrobnosti: [kontext](docs/PROJECT_CONTEXT.md), [konfigurátor](docs/CONFIGURATOR.md), [integrace](docs/INTEGRATIONS.md), [ověření](docs/VALIDATION.md), [výzkum](docs/RESEARCH.md). Provozovatel a obchodní podmínky před prodejem stále potřebují doplnění. Kontakt: petrlavikweb@gmail.com.

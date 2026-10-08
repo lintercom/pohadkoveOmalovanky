@@ -1,5 +1,6 @@
 import { getCompanion, companionContext, CATALOG_VERSION } from './companions.mjs';
-export const PRODUCT = Object.freeze({ pages: 6, priceCzk: 80, language: 'cs', rulesVersion: '1.6', maxPhotoBytes: 10 * 1024 * 1024 });
+import { validateStoryStructure } from './story-schema.mjs';
+export const PRODUCT = Object.freeze({ pages: 6, priceCzk: 80, language: 'cs', rulesVersion: '1.6-prompt-20261008', maxPhotoBytes: 10 * 1024 * 1024 });
 export const IMAGE_SETTINGS = Object.freeze({ model: 'gpt-image-2', quality: 'medium', size: '1536x1024', n: 1 });
 export const COLORS = Object.freeze({ red: '#C62828', yellow: '#AD7900', green: '#2E7D32', blue: '#1565C0', purple: '#7B1FA2', pink: '#C83F81', orange: '#C45B00' });
 export const THEMES = ['Kouzelný les', 'Zvířecí kamarádi', 'Zatoulaný obláček', 'Podmořský svět', 'Vesmír', 'Dinosauři', 'Vlastní téma'];
@@ -58,14 +59,30 @@ export function validateStory(story, childAge) {
   const ids = new Set(story.characters.map(c => c.id));
   if (ids.size !== story.characters.length || !ids.has('child')) throw new Error('INVALID_CHARACTERS');
   const range = childAge <= 4 ? [25,40] : childAge <= 6 ? [35,50] : [45,65];
+  validateStoryStructure(story);
+  if(story.characters.find(c=>c.id==='child').role!=='main')throw Error('INVALID_MAIN_CHARACTER');
+  const objects=new Set(story.recurring_objects.map(o=>o.id));
+  if(objects.size!==story.recurring_objects.length)throw Error('INVALID_OBJECT_IDS');
+  const normalized=value=>value.trim().toLocaleLowerCase('cs').replace(/\s+/gu,' ');
+  const plans=story.pages.map(p=>p.scene_plan);
+  if(new Set(plans.map(p=>p.shot_type)).size<3||new Set(plans.map(p=>normalized(p.composition_en))).size<3)throw Error('INSUFFICIENT_SCENE_VARIETY');
+  for(const plan of plans)if(plans.filter(p=>normalized(p.composition_en)===normalized(plan.composition_en)).length>2)throw Error('REPEATED_COMPOSITION');
   for (const [index, page] of story.pages.entries()) {
     if (page.page_number !== index + 1 || Object.hasOwn(page,'title_cs')) throw new Error('INVALID_PAGE_NUMBER_OR_SCENE_TITLE');
     if (typeof page.story_text_cs !== 'string' || typeof page.image_prompt_en !== 'string' || !page.image_prompt_en.trim() || typeof page.scene_description_cs !== 'string' || !page.scene_description_cs.trim()) throw new Error('INVALID_SCENE');
     const words = page.story_text_cs.trim().split(/\s+/u).length;
     if (words < range[0] || words > range[1]) throw new Error('INVALID_TEXT_LENGTH');
     if (!Array.isArray(page.character_ids) || !page.character_ids.length || page.character_ids.some(id => !ids.has(id))) throw new Error('INVALID_CHARACTER_REFERENCE');
+    const stateIds=page.character_states.map(s=>s.character_id),objectIds=page.object_states.map(s=>s.object_id);
+    if(new Set(stateIds).size!==stateIds.length||stateIds.length!==page.character_ids.length||stateIds.some(id=>!page.character_ids.includes(id)))throw Error('INVALID_CHARACTER_STATES');
+    if(new Set(objectIds).size!==objectIds.length||objectIds.some(id=>!objects.has(id)))throw Error('INVALID_OBJECT_STATES');
+    if(index){const previous=plans[index-1],plan=plans[index];
+      const differences=['location_zone_cs','shot_type','camera_angle_en','composition_en'].filter(key=>normalized(plan[key])!==normalized(previous[key])).length;
+      if(normalized(previous.main_action_cs)===normalized(plan.main_action_cs)||differences<2)throw Error('REPEATED_ADJACENT_SCENE');
+    }
     const target = page.color_target;
     if (!target || !Object.hasOwn(COLORS,target.color_en) || typeof target.phrase_cs !== 'string' || !target.phrase_cs.trim() || !page.story_text_cs.includes(target.phrase_cs) || !target.object_cs || !target.color_cs || !target.phrase_cs.includes(target.color_cs) || !target.phrase_cs.includes(target.object_cs)) throw new Error('INVALID_COLOR_TARGET');
+    if(page.story_text_cs.split(target.phrase_cs).length!==2)throw Error('REPEATED_COLOR_TARGET');
     const stems = {red:'červen',yellow:'žlut',green:'zelen',blue:'modr',purple:'fialov',pink:'růžov',orange:'oranžov'};
     if (!target.color_cs.toLowerCase().startsWith(stems[target.color_en])) throw new Error('COLOR_MISMATCH');
   }

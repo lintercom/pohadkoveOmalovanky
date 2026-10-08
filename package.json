@@ -2,7 +2,7 @@
   "name": "moje-pohadka",
   "version": "1.6.0",
   "private": true,
-  "description": "ÄŚeskĂ˝ designovĂ˝ prototyp pĹ™Ă­bÄ›hovĂ˝ch omalovĂˇnek",
+  "description": "Český web personalizovaných příběhů se šesti omalovánkami",
   "scripts": {
     "start": "node preview-server.cjs",
     "check": "node --check dist/app.js && node --check dist/configurator.mjs && node --check dist/site.js && node check-assets.cjs && node --test tests/*.test.mjs",

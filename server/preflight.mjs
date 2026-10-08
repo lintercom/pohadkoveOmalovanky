@@ -16,24 +16,27 @@ export async function preflight(raw,photo=null,services={}){
  if(!checked.valid)return finish(result('clarify','INVALID_INPUT','Opravte označené údaje.',{...checks,technical:'clarification_required'},{field_errors:checked.errors}));
  if(!await validPhoto(photo))return finish(result('unsupported','INVALID_PHOTO','Soubor nemá podporovaný formát JPEG nebo PNG.',{...checks,technical:'unsupported'}));
  checks.technical='supported';
- if(!services.provider||!Number.isFinite(services.orderBudget)||services.orderBudget<=0||['checkProvider','moderate','assessRights','saveApproval','loadApproval','recordCheck'].some(k=>typeof services[k]!=='function'))return finish({...unavailable(),checks});
+ if(!services.provider||!Number.isFinite(services.orderBudget)||services.orderBudget<=0||['checkProvider','moderate','saveApproval','loadApproval','recordCheck'].some(k=>typeof services[k]!=='function'))return finish({...unavailable(),checks});
  try{
   const provider=await services.checkProvider(IMAGE_SETTINGS);
   if(provider?.available!==true||provider.supportsExactSettings!==true)return finish(result('uncertain','PROVIDER_UNAVAILABLE','Podporu přesného nastavení nelze ověřit. Nejde o zákaz konkrétní postavy.',checks));
   if(!Number.isFinite(provider.estimatedTotalCost)||provider.estimatedTotalCost<0||provider.estimatedTotalCost>services.orderBudget)return finish(result('uncertain','BUDGET_UNVERIFIED','Náklad celého sešitu se nevejde do ověřeného limitu.',checks));
   // These adapters must use verified rules/non-generative provider checks. A paid
   // classifier requires a separate explicit budget and cost receipt; never test images.
-  const [policy,rights]=await Promise.all([services.moderate({input:checked.input,photo}),services.assessRights({input:checked.input,purpose:'private-customer-commercial-service'})]);
+  const [policy,rights]=await Promise.all([services.moderate({input:checked.input,photo}),
+   Promise.resolve().then(()=>services.assessRights?.({input:checked.input,purpose:'private-customer-commercial-service'})).catch(()=>({status:'unknown'}))]);
   checks.provider=policy?.status==='approved'?'no_obstacle':policy?.status==='blocked'?'unsupported':policy?.status==='clarify'?'clarification_required':'unknown';
   checks.rights=rights?.status==='cleared'?'cleared':rights?.status==='restricted'?'restricted':'unresolved';
   if(policy?.status==='blocked')return finish(result('unsupported','PROVIDER_POLICY',policy.message_cs||'Konkrétní obsah nesplňuje pravidla poskytovatele.',checks,{suggested_alternative_cs:'Můžete sami zvolit originálního parťáka z katalogu.'}));
   if(policy?.status==='clarify')return finish(result('clarify','AMBIGUOUS_REQUEST',policy.message_cs||'Upřesněte, koho a jakou scénu máte na mysli.',checks));
   if(policy?.status!=='approved')return finish(result('uncertain','POLICY_UNVERIFIED','Přijatelnost obsahu nelze předem spolehlivě ověřit.',checks));
-  if(checks.rights!=='cleared')return finish(result('clarify','RIGHTS_UNRESOLVED',rights?.message_cs||'Potřebujeme upřesnit oprávnění pro zamýšlené použití. Nejde o technický zákaz postavy.',checks));
+  if(checks.rights==='restricted')return finish(result('clarify','RIGHTS_RESTRICTED',rights?.message_cs||'Je evidován konkrétní konflikt zamýšleného použití. Potřebujeme jej vyjasnit; nejde o technický zákaz postavy.',checks));
   const key=await fingerprint(checked.input,photo,services.provider);
+  const refusal=typeof services.findRejection==='function'?await services.findRejection({fingerprint:key,provider:services.provider,model:IMAGE_SETTINGS.model,rulesVersion:PRODUCT.rulesVersion}):null;
+  if(refusal?.repeated===true&&refusal.fingerprint===key&&refusal.provider===services.provider&&refusal.model===IMAGE_SETTINGS.model&&refusal.rulesVersion===PRODUCT.rulesVersion)return finish(result('unsupported','KNOWN_GENERATOR_REJECTION','Toto přesné zadání poskytovatel opakovaně odmítl. Platba ani nový pokus se nespustily. Upravte zadání; odmítnutí není důkazem porušení práv.',checks));
   const approval={token:crypto.randomUUID(),fingerprint:key,input:checked.input,rulesVersion:PRODUCT.rulesVersion,provider:services.provider,model:IMAGE_SETTINGS.model,expiresAt:Date.now()+900000};
   // Audit must persist before an approval token is issued.
-  const response=await finish(result('clear',null,'Kontrola nezjistila překážku. Přijetí všech budoucích obrázků nelze zaručit.',checks));
+  const response=await finish(result('clear',null,'Kontrola nezjistila překážku. Přijetí všech budoucích obrázků nelze zaručit. Kontrola nepotvrzuje oprávnění ke komerčnímu použití.',checks));
   if(!response.can_generate)return response;
   await services.saveApproval(approval);return {...response,approval_token:approval.token};
  }catch{return finish(result('uncertain','CHECK_INCONCLUSIVE','Kontrolu se nepodařilo dokončit. Platba ani generování se nespustily.',checks));}

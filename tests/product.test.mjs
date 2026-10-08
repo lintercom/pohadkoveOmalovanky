@@ -1,16 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile} from 'node:fs/promises';
-import {validateInput,validateStory,renderStoryText,IMAGE_SETTINGS} from '../server/product.mjs';
+import {story} from './fixtures/story.mjs';
+import {validateInput,validateStory,renderStoryText,IMAGE_SETTINGS,PRODUCT} from '../server/product.mjs';
 import {preflight,requireApproval,fingerprint} from '../server/preflight.mjs';
 import {prepareStoryRequest,createImageJobs} from '../server/generation-contract.mjs';
 import {handleApi} from '../server/worker.mjs';
 const input={child_name:'Eliška',child_age:4,theme:'Kouzelný les',companion_type:'Vlastní zadání',custom_companion:'Harry Potter',companion_name:'',appearance_description:'Hnědé vlasy',personal_wish:''};
-const sample=JSON.parse(await readFile(new URL('../spec/sample-page.json',import.meta.url),'utf8'));
+const sample=story().pages[0];
 function services(extra={}) {const approvals=new Map();return {provider:'test-provider',orderBudget:80,
   checkProvider:async()=>({available:true,supportsExactSettings:true,estimatedTotalCost:40}),moderate:async()=>({status:'approved'}),
   assessRights:async()=>({status:"cleared"}),recordCheck:async()=>{},findRejection:async()=>null,saveApproval:async a=>approvals.set(a.token,a),loadApproval:async t=>approvals.get(t),...extra};}
-function story(){return {status:'ready',language:'cs',child_age:4,difficulty:'preschool',title_cs:sample.title_cs,characters:[{id:'child'}],pages:Array.from({length:6},(_,i)=>({...structuredClone(sample),title_cs:undefined,page_number:i+1,character_ids:['child'],scene_description_cs:'Dítě ukazuje na květinu.',image_prompt_en:'Black and white child pointing at a large flower.'})).map(({title_cs,...page})=>page)};}
+
 const png = suffix=>new Blob([new Uint8Array([137,80,78,71,13,10,26,10]),suffix],{type:'image/png'});
 test('known names accepted; server field limits and input normalization',()=>{
  assert.equal(validateInput(input).valid,true);
@@ -38,8 +38,8 @@ test('budget, availability, moderation and failures prevent approval',async()=>{
 });
 test('historical rejection never becomes a name blacklist',async()=>{
  const normalized=validateInput(input).input;const key=await fingerprint(normalized,null,'test-provider');
- const rejection={repeated:true,fingerprint:key,provider:'test-provider',model:IMAGE_SETTINGS.model};
- assert.equal((await preflight(input,null,services({findRejection:async()=>rejection}))).status,'approved');
+ const rejection={repeated:true,fingerprint:key,provider:'test-provider',model:IMAGE_SETTINGS.model,rulesVersion:PRODUCT.rulesVersion};
+ assert.equal((await preflight(input,null,services({findRejection:async()=>rejection}))).status,'blocked');assert.equal((await preflight(input,null,services({findRejection:async()=>({...rejection,repeated:false})}))).status,'approved');assert.equal((await preflight(input,null,services({findRejection:async()=>({...rejection,rulesVersion:'old'})}))).status,'approved');
  assert.equal((await preflight(input,null,services({findRejection:async()=>({...rejection,provider:'other'})}))).status,'approved');
  assert.equal((await preflight({...input,custom_companion:'Jiná postava'},null,services({findRejection:async()=>rejection}))).status,'approved');
 });
@@ -57,7 +57,7 @@ test('trusted developer approval and verified payment; customer cannot set image
  assert.ok(!request.messages[1].content.includes('PREFLIGHT_STATUS'));
  await assert.rejects(prepareStoryRequest({token:approved.approval_token,input,orderId:'unpaid'},{...s,verifyPayment:async()=>false}),/PAYMENT_NOT_VERIFIED/);
  const jobs=createImageJobs(story(),4,[png('reference')]);assert.equal(jobs.length,6);
- for(const job of jobs){assert.equal(job.endpoint,'edits');assert.equal(job.maxAttempts,1);assert.equal(job.body.quality,'medium');assert.equal(job.body.size,'1536x1024');assert.equal(job.body.n,1);assert.ok(!job.body.prompt.includes('{{image_prompt_en}}'));assert.ok(job.body.prompt.includes('Preserve the environment'));assert.ok(job.body.prompt.includes('number and placement of tracks or wheels'));assert.ok(job.body.prompt.includes('never for composition'));assert.ok(job.body.prompt.includes('visual distinctness from the other five illustrations'));assert.ok(job.body.prompt.includes('Black and white child pointing at a large flower.'));assert.ok(!Object.hasOwn(job.body,'input_fidelity'));assert.ok(job.body.image[0] instanceof Blob);}
+ for(const job of jobs){assert.equal(job.endpoint,'edits');assert.equal(job.maxAttempts,1);assert.equal(job.body.quality,'medium');assert.equal(job.body.size,'1536x1024');assert.equal(job.body.n,1);assert.ok(!job.body.prompt.includes('{{image_prompt_en}}'));assert.ok(job.body.prompt.includes('Match the NEW scene'));assert.ok(job.body.prompt.includes('part counts'));assert.ok(job.body.prompt.includes('Change only the states explicitly specified'));assert.ok(job.body.prompt.includes('world_rules_cs'));assert.ok(job.body.prompt.includes('Black and white child pointing at a large flower.'));assert.ok(!Object.hasOwn(job.body,'input_fidelity'));assert.ok(job.body.image[0] instanceof Blob);}
  assert.equal(createImageJobs(story(),4)[0].endpoint,'generations');assert.throws(()=>createImageJobs(story(),4,['photo.png']),/ACTUAL_IMAGE_REFERENCES_REQUIRED/);
 });
 test('real request handlers return fail closed status and reject malformed/cross-origin calls',async()=>{

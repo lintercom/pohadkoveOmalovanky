@@ -1,45 +1,29 @@
-# Kontext a plán revize — 7. 10. 2026
+# Aktuální kontext projektu — 8. 10. 2026
 
-Výchozí commit: 7c6c353. Existující Sites web a GitHub lintercom/pohadkoveOmalovanky. Tato revize je pouze místní: poslední zadání výslovně zakazuje produkční publikování, reklamu a placenou produkční tvorbu. Nevolat deployment ani push, který by mohl spustit automatické nasazení.
+Český web Pohádkové omalovánky, existující Sites projekt appgprj_6ac4da78b5e881919f56ce3684a83c9f. Aktualizace se zveřejňují přes Sites se stávajícím soukromým publikem. Repo GitHub: lintercom/pohadkoveOmalovanky. GitHub Pages má samostatný statický export; aktualizace Sites sama neznamená nové nasazení GitHub Pages.
 
-Produkt: 6 českých stran, 6 černobílých scén, věk 3–9, 80 Kč pro rodiče, volitelná fotografie, původní PDF sazba. Zachovat jemné barvy a zaoblení. Školní cena ani licence nejsou schválené. Poptávkový e-mail: petrlavikweb@gmail.com; identita provozovatele dosud chybí.
+## Produkt a současný web
 
-## Priority a pořadí
+Šest českých stran, šest černobílých ilustrací, věk 3–9, 80 Kč z centrální konfigurace, volitelná fotografie. Zachovat současný grafický styl, rozestupy, barvy, zaoblení a typografii. Hlavní stránka obsahuje kompletní šestistránkový vzor s PDF a listováním. Používané ilustrace a podklady vzoru zůstávají zachované.
 
-1. Podklady a primární zdroje: dokončeno. Původní SEO PDF je doporučení, ne měřená hledanost. Rešerši a hypotézy evidovat samostatně.
-2. Parťák: originální katalog s verzemi a obrázky, vlastní vstup, stejně dostupná volba bez parťáka; samostatný volitelný krok.
-3. Kontrola: technika / pravidla poskytovatele / komerční oprávnění odděleně. Čtyři uživatelské stavy. Odstranit historický blacklist. Neověřené oprávnění není technický zákaz. Žádné placené zkušební obrázky.
-4. SEO/UX: předrenderovaný hlavní obsah, užitečné rozdílné stránky, canonicals, sitemap, skutečná 404, pilot školek, návod na tisk. Nepřidávat prázdné tematické a věkové stránky bez vlastních ukázek.
-5. Provozní základ: ověřený webhook, idempotence, trvalá fronta/outbox, uložení postupu a pokusů, stop při odmítnutí, rozpočet, soukromé přístupy a expirace, metriky bez osobních údajů. Externí adaptéry oddělit a bez konfigurace uzavřít.
-6. Kontroly: syntaxe/build, integrační scénáře, SEO HTML/HTTP, bezpečnost přístupu, formulář. Zaznamenat neprovedené kontroly i chybějící integrace.
+Konfigurátor je na /vytvorit/, všechna pole na jedné stránce, nic předvybraného. Vlastní parťák a svět jsou první volby; parťák může také chybět. Formulář není v modálu. Modál následuje po validaci, drží zadání a umožňuje zobrazit a kopírovat samostatný prompt pro ChatGPT. Fotografie se přikládá zvlášť. Konfigurátor je noindex. Nevracet starý průvodce ani výběrové karty na homepage.
 
-## Rozhodnutí
+Katalog má osm originálních parťáků, včetně delfína a ptáčka. Kontrola rozlišuje technickou podporu, pravidla poskytovatele a komerční oprávnění. Bez blacklistu jmen, tiché náhrady postav či placených zkušebních obrázků. Změna parametrů ruší předchozí schválení. Revize pravidel 1.6-prompt-20261008 zneplatňuje starší tokeny. Pouhá neověřená oprávnění sama schválení neblokují a schválení je nepotvrzuje. Pouze přesné opakovaně odmítnuté zadání se shodným otiskem, poskytovatelem, modelem a verzí pravidel se znovu nespouští; nikdy nevzniká zákaz jména.
 
-- Zachovat HTML/CSS/JS + Worker; přidat malý sestavovací krok obsahu, bez zbytečné migrace a instalace frameworku.
-- Výchozí soukromý Site není veřejně indexovatelný; SEO připravenost neznamená indexaci. Před veřejným prodejem je nutné samostatné rozhodnutí o zveřejnění.
-- Nové zadání kontroly má přednost před odlišnými pasážemi původního promptu 1.5. Zákaznický text zůstává daty.
-- Neexistují provozní konverze, náklady, rozhovory ani CWV terénní data. Nic z toho nevymýšlet.
-- Prohlížečová kontrola místního webu byla v tomto chatu dříve blokována bezpečnostní politikou. Neobcházet ji alternativním prohlížečem; nepředstírat pořízené screenshoty nebo změřené Lighthouse skóre.
-- Jedna sada katalogových ilustrací; opakované generování variant neobjednávat.
+## Jediný aktuální zdroj promptu
 
-Aktuální výsledky a zbývající kroky: viz VALIDATION.md po dokončení revize.
+spec/Ridici_prompt_6_omalovanek_v1_6.md je úplný nový dokument dodaný uživatelem, beze změny jeho obsahu. Nahrazuje původní verzi i samostatné dodatky dramaturgie a rozmanitosti. scripts/build-prompts.mjs z něj při build-pages odvozuje server/prompts.mjs; nic neupravovat ručně v generovaných kopiích. shared/story-brief.mjs je jediný sestavovač pro náhled, kopírování a API.
 
-## Dokončená místní implementace
+API dostává celý přesný hlavní prompt a produkční režim. Ruční kopie má výslovný EXECUTION_MODE=manual_preview, nezaměňuje ho za schválení nebo platbu, před obrázky ověřuje dostupné nástroje a přesné nastavení. Zákaznický JSON produkční výjimku nemůže aktivovat. Neobvyklé kombinace se smysluplně interpretují, identita zůstává stejná.
 
-Revize designu podle 14 inspirací, zkrácení obsahu, 6 stran vzoru a PDF, pohyb obrázků přes CSS, katalog parťáků, čtyřkrokový formulář, oddělená kontrola a obsahové SEO stránky jsou vytvořené. Školní poptávka míří přes poštovní aplikaci na zadaný e-mail. Serverový základ je otestovaný s lokálními adaptéry; skutečné externí integrace popisuje INTEGRATIONS.md. Produkce a GitHub nebyly změněny. Neopakovat generování hotových ilustrací ani rešerši bez nového důvodu.
+Výstup 1.6 zahrnuje world_rules_cs, invariant_features_en, allowed_state_changes_cs, scene_plan, character_states a object_states. server/story-schema.mjs je JSON Schema a strukturální validátor; product.mjs kontroluje odkazy, délky, barvy a základní rozmanitost. Kontrola řetězců nepotvrzuje skutečnou vizuální odlišnost. Obrazové vstupy obsahují pravidla světa a pouze přítomné postavy, předměty a stavy. Model/medium/1536x1024/n=1 jsou stále pevné parametry, nejvýše jeden pokus na scénu.
 
-## Změna autorizace — GitHub Pages
+## Stav integrací a ověření
 
-Uživatel následně výslovně požádal o změnu značky na Pohádková omalovánka, nahrání projektu na GitHub a publikování na GitHub Pages. Tento nový pokyn nahrazuje dřívější zákaz publikování pro toto nasazení. Hlavní zdroje budou v main, veřejný statický export v gh-pages. Produkční server, platby a generování se tím nepřipojují.
+Skutečný poskytovatel, platby a automatický vizuální hodnotitel nejsou připojeni. Web to přiznává; produkční akce jsou bez konfigurace zavřené. order-engine vyžaduje důvěryhodné doklady kontroly každého skutečného obrázku, celé sady a vyrenderovaného PDF. Bez nich nenabídne stažení a vadný obrázek nepředá jako ověřenou referenci. Kontrolu a všechny její případné náklady musí skutečně zajistit produkční adaptér; testy používají fixture doklady, žádné placené API.
 
-## Aktuální změna 8. 10. 2026
+30 testů pokrývá propagaci přesného promptu, ruční/produkční režim, novou strukturu a obrazové vstupy, kontroly a zastavení bez dalšího pokusu. Nejde o měření kvality obrázků ani nákladů reálné výroby. Browser QA byla dříve blokována politikou; neobcházet a nepředstírat ji.
 
-Uživatel požádal o samostatný konfigurátor /vytvorit/, všechna pole na jedné stránce, kontrolní modal až po validaci, kopírování kompletního promptu a spuštění přes Sites. Implementováno bez redesignu, podle aktuálního GitHub main 4d1b290 včetně delfína a ptáčka. Stav a kontrolní meze: CONFIGURATOR.md. Nepřepisovat zpět starý wizard. Nová revize se publikuje přes stávající Sites projekt s původním publikem; není tím vyžádáno nové nasazení GitHub Pages.
+Nepoužívané staré šablony, duplicitní sample-page, globální catalog-data, neodkazované staré náhledy a místní QA/log artefakty byly odstraněny. Zachovat zdroje, testy, používané ilustrace, PDF a Git historii. Neuklízet cizí projekt ani vnořené .git exportu pages-dist.
 
-## Dramaturgie 8. 10. 2026
-
-Nový zákaznický blok z `spec/Dramaturgie_pravidla.md` je celý součástí STORY_PROMPT před návrhem děje. Platí pro společné zadání v ChatGPT i API a obrazové prompty. Priorita: pravidla světa, skutečný začátek, jeden cíl a příčinný vývoj, funkční adaptace předmětů, barvy až podle děje, interní kontrola scénáře před prvním obrázkem. Běžné neobvyklé kombinace se tvůrčím způsobem propojí bez zbytečného doptávání. Schvalovací brány a pevná nastavení se nemění. Ověřujeme propagaci instrukcí, nikoli kvalitu skutečně vygenerovaného příběhu; placená generace nebyla spuštěna.
-
-## Rozmanitost ilustrací a vybavení 8. 10. 2026
-
-Celý dodaný blok `spec/Rozmanitost_scen_a_vybaveni.md` je v řídícím promptu před návrhem děje, dostupný v náhledu, kopírování i API. Plán šesti různých akcí a kompozic vzniká před prvním obrázkem; konstrukce opakovaných vozidel patří do existujícího `recurring_objects.visual_description_en` a relevantních `image_prompt_en`. Reference zachovává konstrukci, nikoli kompozici. Obrazový prompt i závěrečné zadání požadují oddělenou kontrolu shody s textem, konzistence a odlišnosti skutečných výsledků. Jde o pravidla generování; automatický vizuální hodnotitel ani živý poskytovatel nejsou připojeni. Ověření je bez placeného generování a nezaručuje kvalitu budoucích obrázků.
+Kontakt je petrlavikweb@gmail.com. Identita provozovatele a obchodní podmínky stále chybí. Nejsou naměřené konverze, hledanost, CWV ani skutečné výrobní náklady. Podrobnosti integrací: INTEGRATIONS.md, historie ověření: VALIDATION.md.

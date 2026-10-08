@@ -45,5 +45,4 @@ preview=root/'dist/assets/story';preview.mkdir(parents=True,exist_ok=True)
 rendered=pdfium.PdfDocument(str(pdf))
 for i,page in enumerate(rendered):
     bitmap=page.render(scale=1200/w);image=bitmap.to_pil();image.save(preview/f'page-{i+1}.webp',quality=90,method=6)
-    if i==0:image.save(root/'dist/assets/ukazka-stranky.png')
 print('Verified six A4 landscape pages, one title, Czech font, fixed colors and uncropped 3:2 images; rendered all previews.')

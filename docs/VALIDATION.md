@@ -20,3 +20,12 @@
 ## Ruční kontrola při nejbližší dostupné prohlížečové relaci
 
 Šířky 360/390/768/1440 px; bez horizontálního přetékání. Listovat všech šest stran, číst text, stáhnout PDF. Otevřít formulář ze všech CTA, projít tři volby parťáka, vracet se zpět, měnit fotografii, spustit nepřipojenou kontrolu. Tab/Shift+Tab/Escape a vrácení focusu. Zkontrolovat školní mailto a pravdivý stav neodesláno. Zapnout systémový reduced-motion a pozastavit animace. Vyzkoušet navigaci a vzor i bez JavaScriptu.
+
+
+## Aktuální prompt 1.6 a úklid — 8. 10. 2026
+
+Nový dodaný dokument je jediný zdroj všech promptů. Test ověřuje přesnou shodu hlavního a obrazového promptu se zdrojem a shodu veřejného runtime. Ruční kopie má explicitní manual_preview, produkční režim nemůže zapnout zákaznický JSON. Nová pole jsou povinná a nezahazují se; testujeme chybějící pole, neplatné odkazy, opakované scény, jednu barevnou frázi a relevantní obrazové vstupy.
+
+Serverové testy navíc ověřují zastavení bez vizuálního dokladu, zákaz jeho použití jako reference a zákaz doručení bez kontroly celé sady a PDF. Doklady jsou fixture; skutečný hodnotitel ani placená výroba nejsou připojené. 30 testů prošlo. Syntaxe, build Worker a kontrola odkazů, CSS, ID a existujícího PDF jsou ověřené; neproběhlo placené generování ani browser QA.
+
+Odstraněny nahrazené tři promptové podklady, duplicitní sample-page, nepoužívaný globální katalog, staré neodkazované náhledy, místní QA rendery a logy. Zachované zdroje a používaná grafika umožňují reprodukovat aktuální web. Deployment archiv je dočasný a po úspěšném publikování se odstraňuje. Git historie, vnořený Git checkout exportu a uživatelské soubory mimo repo nejsou předmětem úklidu.
