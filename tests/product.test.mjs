@@ -57,7 +57,7 @@ test('trusted developer approval and verified payment; customer cannot set image
  assert.ok(!request.messages[1].content.includes('PREFLIGHT_STATUS'));
  await assert.rejects(prepareStoryRequest({token:approved.approval_token,input,orderId:'unpaid'},{...s,verifyPayment:async()=>false}),/PAYMENT_NOT_VERIFIED/);
  const jobs=createImageJobs(story(),4,[png('reference')]);assert.equal(jobs.length,6);
- for(const job of jobs){assert.equal(job.endpoint,'edits');assert.equal(job.maxAttempts,1);assert.equal(job.body.quality,'medium');assert.equal(job.body.size,'1536x1024');assert.equal(job.body.n,1);assert.ok(!Object.hasOwn(job.body,'input_fidelity'));assert.ok(job.body.image[0] instanceof Blob);}
+ for(const job of jobs){assert.equal(job.endpoint,'edits');assert.equal(job.maxAttempts,1);assert.equal(job.body.quality,'medium');assert.equal(job.body.size,'1536x1024');assert.equal(job.body.n,1);assert.ok(!job.body.prompt.includes('{{image_prompt_en}}'));assert.ok(job.body.prompt.includes('Preserve the environment'));assert.ok(job.body.prompt.includes('Black and white child pointing at a large flower.'));assert.ok(!Object.hasOwn(job.body,'input_fidelity'));assert.ok(job.body.image[0] instanceof Blob);}
  assert.equal(createImageJobs(story(),4)[0].endpoint,'generations');assert.throws(()=>createImageJobs(story(),4,['photo.png']),/ACTUAL_IMAGE_REFERENCES_REQUIRED/);
 });
 test('real request handlers return fail closed status and reject malformed/cross-origin calls',async()=>{

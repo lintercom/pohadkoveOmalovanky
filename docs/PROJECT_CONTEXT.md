@@ -35,3 +35,7 @@ Uživatel následně výslovně požádal o změnu značky na Pohádková omalov
 ## Aktuální změna 8. 10. 2026
 
 Uživatel požádal o samostatný konfigurátor /vytvorit/, všechna pole na jedné stránce, kontrolní modal až po validaci, kopírování kompletního promptu a spuštění přes Sites. Implementováno bez redesignu, podle aktuálního GitHub main 4d1b290 včetně delfína a ptáčka. Stav a kontrolní meze: CONFIGURATOR.md. Nepřepisovat zpět starý wizard. Nová revize se publikuje přes stávající Sites projekt s původním publikem; není tím vyžádáno nové nasazení GitHub Pages.
+
+## Dramaturgie 8. 10. 2026
+
+Nový zákaznický blok z `spec/Dramaturgie_pravidla.md` je celý součástí STORY_PROMPT před návrhem děje. Platí pro společné zadání v ChatGPT i API a obrazové prompty. Priorita: pravidla světa, skutečný začátek, jeden cíl a příčinný vývoj, funkční adaptace předmětů, barvy až podle děje, interní kontrola scénáře před prvním obrázkem. Běžné neobvyklé kombinace se tvůrčím způsobem propojí bez zbytečného doptávání. Schvalovací brány a pevná nastavení se nemění. Ověřujeme propagaci instrukcí, nikoli kvalitu skutečně vygenerovaného příběhu; placená generace nebyla spuštěna.

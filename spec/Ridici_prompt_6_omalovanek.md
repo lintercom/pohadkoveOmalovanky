@@ -238,3 +238,8 @@ Počet automatických opakování a limit nákladů určuje aplikace, nikoli pro
 ## 7. Ověření před spuštěním
 
 Na několika zkušebních objednávkách ověř zejména podobu dítěte ve všech šesti scénách, jednoduchost pro věk čtyři roky, návaznost děje a skutečně naměřené náklady celého sešitu. Prompt je výchozí výrobní specifikace, nikoli záruka výsledné kvality nebo ceny.
+
+
+## Doplnění dramaturgie — 8. 10. 2026
+
+Aktuální autoritativní doplnění zákazníka je uloženo v `Dramaturgie_pravidla.md`. Je součástí `STORY_PROMPT`, společného sestavovače zadání pro ChatGPT i API a pravidel obrazových promptů. Při rozporu s dřívějším požadavkem na upřesnění běžné neobvyklé kombinace má toto doplnění přednost. Identita dítěte, parťáka a světa, bezpečnost a šestistránkový rozsah zůstávají závazné.

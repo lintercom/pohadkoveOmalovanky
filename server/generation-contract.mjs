@@ -19,5 +19,5 @@ export function createImageJobs(story,age,references=[]) {
   validateStory(story,age);
   if (references.some(ref=>!(ref instanceof Blob))) throw new Error('ACTUAL_IMAGE_REFERENCES_REQUIRED');
   return story.pages.map(page=>({pageNumber:page.page_number,endpoint:references.length?'edits':'generations',maxAttempts:1,
-    body:{...IMAGE_SETTINGS,prompt:IMAGE_PROMPT+'\n'+JSON.stringify({child_age:age,difficulty:story.difficulty,characters:story.characters,recurring_objects:story.recurring_objects||[],page}),...(references.length?{image:references}:{})}}));
+    body:{...IMAGE_SETTINGS,prompt:IMAGE_PROMPT.replace('{{image_prompt_en}}',()=>page.image_prompt_en)+'\n'+JSON.stringify({child_age:age,difficulty:story.difficulty,characters:story.characters,recurring_objects:story.recurring_objects||[],page}),...(references.length?{image:references}:{})}}));
 }
