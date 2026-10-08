@@ -112,11 +112,13 @@ body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none
 @media(max-width:600px){body::before{background-size:420px 420px;opacity:.19;mask-size:100% 1100px;-webkit-mask-size:100% 1100px}}
 @media print{body::before{display:none}}
 
-/* Margin illustrations share the warm ink and quiet tone of the paper doodles. */
-.creation-journey,.faq{position:relative}
-.margin-scene{display:block;position:absolute;left:calc((100% - 100vw)/2 + 32px);width:clamp(130px,calc((100vw - 940px)/2 - 36px),310px);aspect-ratio:1;background-color:#806a50;opacity:.24;mask-image:var(--scene);mask-size:contain;mask-position:center;mask-repeat:no-repeat;-webkit-mask-image:var(--scene);-webkit-mask-size:contain;-webkit-mask-position:center;-webkit-mask-repeat:no-repeat;pointer-events:none;user-select:none}
-.margin-scene-space{top:220px;transform:rotate(-3deg)}
-.margin-scene-forest{top:160px;transform:rotate(2deg)}
-.margin-scene-children{left:auto;right:calc((100% - 100vw)/2 + 32px);top:auto;bottom:12px;transform:rotate(2deg)}
-@media(max-width:1199px){.margin-scene{display:none}}
+/* Large paper illustrations sit behind content, extending beneath the cards. */
+.creation-journey,.faq{position:relative;isolation:isolate}
+body{overflow-x:clip}
+.margin-scene{display:block;position:absolute;z-index:-1;width:clamp(360px,35vw,560px);aspect-ratio:1;background-color:#806a50;opacity:.20;mask-image:var(--scene);mask-size:contain;mask-position:center;mask-repeat:no-repeat;-webkit-mask-image:var(--scene);-webkit-mask-size:contain;-webkit-mask-position:center;-webkit-mask-repeat:no-repeat;pointer-events:none;user-select:none}
+.margin-scene-space{left:clamp(-180px,-9vw,-80px);top:180px;transform:rotate(-7deg)}
+.margin-scene-children{right:clamp(-180px,-9vw,-80px);bottom:-30px;transform:rotate(5deg)}
+.margin-scene-forest{left:clamp(-160px,-8vw,-65px);top:90px;width:clamp(360px,32vw,520px);transform:rotate(-4deg);opacity:.17}
+@media(max-width:900px){.margin-scene{width:380px;opacity:.15}.margin-scene-space{left:-170px;top:160px}.margin-scene-children{right:-160px;bottom:0}.margin-scene-forest{left:-160px;top:120px;width:360px;opacity:.13}}
+@media(max-width:600px){.margin-scene{width:280px;opacity:.13}.margin-scene-space{left:-130px;top:170px}.margin-scene-children{right:-135px;bottom:-30px}.margin-scene-forest{left:-145px;top:100px;width:290px;opacity:.11}}
 @media print{.margin-scene{display:none}}
