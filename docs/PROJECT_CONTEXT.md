@@ -31,3 +31,7 @@ Revize designu podle 14 inspirací, zkrácení obsahu, 6 stran vzoru a PDF, pohy
 ## Změna autorizace — GitHub Pages
 
 Uživatel následně výslovně požádal o změnu značky na Pohádková omalovánka, nahrání projektu na GitHub a publikování na GitHub Pages. Tento nový pokyn nahrazuje dřívější zákaz publikování pro toto nasazení. Hlavní zdroje budou v main, veřejný statický export v gh-pages. Produkční server, platby a generování se tím nepřipojují.
+
+## Aktuální změna 8. 10. 2026
+
+Uživatel požádal o samostatný konfigurátor /vytvorit/, všechna pole na jedné stránce, kontrolní modal až po validaci, kopírování kompletního promptu a spuštění přes Sites. Implementováno bez redesignu, podle aktuálního GitHub main 4d1b290 včetně delfína a ptáčka. Stav a kontrolní meze: CONFIGURATOR.md. Nepřepisovat zpět starý wizard. Nová revize se publikuje přes stávající Sites projekt s původním publikem; není tím vyžádáno nové nasazení GitHub Pages.

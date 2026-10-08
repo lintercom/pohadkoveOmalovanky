@@ -14,7 +14,7 @@ export async function handleApi(request,services={}) {
   if(url.pathname==='/api/payments/webhook'){if(!services.webhook)return json(unavailable(),503);const r=await handlePaymentWebhook(request,services.webhook);r.headers.set('cache-control','no-store');r.headers.set('x-robots-tag','noindex');return r;}
   const orderRoute=url.pathname.match(/^\/api\/orders\/([a-zA-Z0-9-]+)(\/pdf)?$/);
   if(orderRoute){if(request.method!=='GET')return json({error:'METHOD_NOT_ALLOWED'},405);if(!services.engine)return json(unavailable(),503);const token=request.headers.get('authorization')?.replace(/^Bearer /,'')||'';try{if(orderRoute[2]){if(!services.storage)return json(unavailable(),503);const file=await services.engine.file(orderRoute[1],token,services.storage);return new Response(file,{headers:{'content-type':'application/pdf','content-disposition':'attachment; filename=pohadka.pdf','cache-control':'no-store','x-robots-tag':'noindex','x-content-type-options':'nosniff'}});}return json(await services.engine.status(orderRoute[1],token));}catch{return json({error:'RESULT_UNAVAILABLE'},404);}}
-  if (url.pathname === '/api/readiness' && request.method === 'GET') return json(unavailable());
+  if (url.pathname === '/api/readiness' && request.method === 'GET') return json({ ...unavailable(),configured:!!services.preflight });
   if (url.pathname === '/api/preflight') {
     if(request.method!=='POST')return json({error:'METHOD_NOT_ALLOWED'},405);
     const origin=request.headers.get('origin');
@@ -45,6 +45,6 @@ export function createWorker(assets,services={}) {
   const file=found||assets['/404.html'];
   if(!file)return new Response('Not found',{status:404});
   const bytes=Uint8Array.from(atob(file.base64),c=>c.charCodeAt(0));
-  return new Response(request.method==='HEAD'?null:bytes,{status:found?200:404,headers:{'content-type':file.type,'cache-control':'no-cache','x-content-type-options':'nosniff'}});
+  return new Response(request.method==='HEAD'?null:bytes,{status:found?200:404,headers:{'content-type':file.type,'cache-control':pathname.startsWith('/vytvorit')?'no-store':'no-cache',...(pathname.startsWith('/vytvorit')?{'x-robots-tag':'noindex'}:{}),'x-content-type-options':'nosniff'}});
  }};
 }

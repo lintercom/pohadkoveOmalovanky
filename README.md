@@ -37,3 +37,7 @@ Podrobnosti: [kontext](docs/PROJECT_CONTEXT.md), [výzkum a rozhodnutí](docs/RE
 ## GitHub Pages — nové zadání
 
 Značka webu je Pohádková omalovánka. Uživatel následně autorizoval zveřejnění na GitHub Pages. `node scripts/build-github-pages.mjs` vytvoří samostatný veřejný export v ignorované složce `pages-dist/`, s cestami pod `/pohadkoveOmalovanky/`, odpovídajícími canonical odkazy a explicitním statickým režimem bez odesílání zákaznického zadání. Publikovat obsah exportu do větve gh-pages, kořen větve. Zdrojový projekt zůstává v main. Adresa: https://lintercom.github.io/pohadkoveOmalovanky/.
+
+## Konfigurátor 8. 10. 2026
+
+Aktuální formulář je na `/vytvorit/`, všechny parametry na jedné stránce. Je noindex. Kontrolní modál umožňuje sestavit, zobrazit a zdarma zkopírovat úplný samostatný prompt pro ChatGPT; fotografii je nutné přiložit zvlášť. Společný sestavovač: `shared/story-brief.mjs`. Serverová kontrola a placené služby nejsou připojené; modál to výslovně uvádí. Podrobnosti a ověření: `docs/CONFIGURATOR.md`. Dřívější popis čtyř kroků je tímto nahrazen.

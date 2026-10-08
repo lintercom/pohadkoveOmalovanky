@@ -5,7 +5,7 @@
   "description": "ÄŚeskĂ˝ designovĂ˝ prototyp pĹ™Ă­bÄ›hovĂ˝ch omalovĂˇnek",
   "scripts": {
     "start": "node preview-server.cjs",
-    "check": "node --check dist/app.js && node --check dist/preflight.js && node --check dist/site.js && node --check dist/companion-ui.js && node check-assets.cjs && node --test tests/*.test.mjs",
+    "check": "node --check dist/app.js && node --check dist/configurator.mjs && node --check dist/site.js && node check-assets.cjs && node --test tests/*.test.mjs",
     "build": "node scripts/build-pages.mjs && node scripts/build-worker.cjs"
   },
   "engines": {
