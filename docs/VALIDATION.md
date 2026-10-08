@@ -41,3 +41,7 @@ Všech 31 automatických testů prošlo. Build Workeru obsahuje 48 veřejných s
 ## Grafická sazba vzoru — 8. 10. 2026
 
 Znovu vysázeno šest stran původního příběhu a vyrenderováno všech šest náhledů pro homepage. Přidáno typografické logo s vloženým Nunito Black, barvy webu, úvodní označení pouze na první straně, podpis a nenápadný ukazatel stránky v patičce. Všech šest renderů bylo vizuálně prohlédnuto; bez nových ořezů, překrytí nebo zmenšení původní kreslicí plochy. Text zůstává 15/21 bodů, barvy cílových frází zachovány, scény jsou původní černobílé ilustrace. Ověřeno šest A4 stran na šířku, jediný název a jediné úvodní označení, česká diakritika, značka na každé straně a shodná grafická instrukce v ručním i API sestavovači. Obsah příběhu, konfigurátor a webový layout se nemění.
+
+## Přesun ukázky do modálu — 8. 10. 2026
+
+Odstraněna samostatná ukázková sekce; všech šest stran a PDF jsou v existujícím nativním dialogu, otevřeném z hero obrázku i textového odkazu. Dva nové testy ověřují HTML umístění a logiku skutečných JS skriptů v DOM simulaci: oba spouštěče, listování, klávesové šipky, meze a focus při deaktivaci tlačítka, přímý výběr stran, návrat focusu na správný spouštěč, kliknutí na pozadí a starý hash odkaz. Celkem 33 testů, syntaktické a asset kontroly a build Workeru prošly. Nejde o browser QA; nativní focus trap, Escape a mobilní vykreslení nebyly nově ověřeny v prohlížeči. Obrázky, PDF a konfigurátor zůstávají beze změny.

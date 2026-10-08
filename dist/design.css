@@ -59,3 +59,13 @@ body.motion-paused .public-companions article:hover{transform:none}
 @media(max-width:900px){.pick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.world-picks{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.configurator-heading{padding-top:15px}.configurator-heading h1{font-size:31px;line-height:1.12}.config-section{padding:22px 17px;border-radius:23px;margin-bottom:16px}.config-section-title{gap:10px;margin-bottom:20px}.config-section-title h2{font-size:23px}.config-section-title>b{min-width:34px;height:34px;font-size:17px}.config-fields{grid-template-columns:1fr;gap:0}.pick-grid,.world-picks{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.pick-card{padding:12px 8px;border-radius:18px}.pick-card>strong{font-size:17px}.pick-card>small{font-size:12px}.pick-symbol{height:100px}.config-submit{flex-direction:column;align-items:stretch;gap:18px}.config-submit .button{width:100%}.config-summary dl,.dialog-summary{grid-template-columns:1fr;gap:3px}.config-summary dd,.dialog-summary dd{margin-bottom:9px}.check-dialog{padding:28px 20px 22px}.check-actions{flex-direction:column}.check-actions .button{width:100%;white-space:normal}.check-dialog h2{font-size:27px}.check-dialog #prompt-preview{min-height:250px;font-size:16px}}
 @media(prefers-reduced-motion:reduce){.pick-card{transition:none}.check-dialog [aria-busy=true]::before{animation:none}}
+
+/* The complete sample now opens from the hero, in the existing native dialog. */
+#preview.sample-preview{width:min(1080px,calc(100% - 32px));max-height:calc(100dvh - 32px);padding:24px;border-radius:26px;overflow:auto}
+.sample-preview h2{font-size:27px;margin:0 48px 16px 0;line-height:1.25}
+.sample-preview .close{width:44px;height:44px;top:14px;right:14px}
+.sample-preview .story-reader{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+.sample-preview .reader-pages img{width:auto;max-width:100%;max-height:calc(100dvh - 290px);object-fit:contain;margin-inline:auto}
+.sample-preview .preview-download{margin-top:16px;text-align:center}
+.sample-preview .preview-download .button{display:inline-flex;justify-content:center;white-space:normal}
+@media(max-width:600px){#preview.sample-preview{width:calc(100% - 20px);max-height:calc(100dvh - 20px);padding:20px 12px;border-radius:22px}.sample-preview h2{font-size:23px;margin-right:42px}.sample-preview .close{top:10px;right:8px}.sample-preview .reader-controls{gap:4px}.sample-preview .preview-download .button{font-size:14px;padding:12px 18px}}
