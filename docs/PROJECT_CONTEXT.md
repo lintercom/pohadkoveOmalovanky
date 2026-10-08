@@ -39,3 +39,7 @@ Uživatel požádal o samostatný konfigurátor /vytvorit/, všechna pole na jed
 ## Dramaturgie 8. 10. 2026
 
 Nový zákaznický blok z `spec/Dramaturgie_pravidla.md` je celý součástí STORY_PROMPT před návrhem děje. Platí pro společné zadání v ChatGPT i API a obrazové prompty. Priorita: pravidla světa, skutečný začátek, jeden cíl a příčinný vývoj, funkční adaptace předmětů, barvy až podle děje, interní kontrola scénáře před prvním obrázkem. Běžné neobvyklé kombinace se tvůrčím způsobem propojí bez zbytečného doptávání. Schvalovací brány a pevná nastavení se nemění. Ověřujeme propagaci instrukcí, nikoli kvalitu skutečně vygenerovaného příběhu; placená generace nebyla spuštěna.
+
+## Rozmanitost ilustrací a vybavení 8. 10. 2026
+
+Celý dodaný blok `spec/Rozmanitost_scen_a_vybaveni.md` je v řídícím promptu před návrhem děje, dostupný v náhledu, kopírování i API. Plán šesti různých akcí a kompozic vzniká před prvním obrázkem; konstrukce opakovaných vozidel patří do existujícího `recurring_objects.visual_description_en` a relevantních `image_prompt_en`. Reference zachovává konstrukci, nikoli kompozici. Obrazový prompt i závěrečné zadání požadují oddělenou kontrolu shody s textem, konzistence a odlišnosti skutečných výsledků. Jde o pravidla generování; automatický vizuální hodnotitel ani živý poskytovatel nejsou připojeni. Ověření je bez placeného generování a nezaručuje kvalitu budoucích obrázků.

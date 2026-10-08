@@ -243,3 +243,7 @@ Na několika zkušebních objednávkách ověř zejména podobu dítěte ve vše
 ## Doplnění dramaturgie — 8. 10. 2026
 
 Aktuální autoritativní doplnění zákazníka je uloženo v `Dramaturgie_pravidla.md`. Je součástí `STORY_PROMPT`, společného sestavovače zadání pro ChatGPT i API a pravidel obrazových promptů. Při rozporu s dřívějším požadavkem na upřesnění běžné neobvyklé kombinace má toto doplnění přednost. Identita dítěte, parťáka a světa, bezpečnost a šestistránkový rozsah zůstávají závazné.
+
+## Rozmanitost scén a stálá podoba vybavení — 8. 10. 2026
+
+Další závazné doplnění je v `Rozmanitost_scen_a_vybaveni.md`, v plném znění součástí `STORY_PROMPT` i společného zadání pro ChatGPT a API. Před první ilustrací vznikne plán šesti vizuálně odlišných dějových okamžiků. Pevná konstrukce opakovaných vozidel se zapisuje do `recurring_objects.visual_description_en` a přenáší do relevantních obrazových promptů; existující schválená reference určuje konstrukci, nikoli kompozici. Po generování se odděleně kontroluje soulad s textem, stálá podoba postav a vybavení a rozmanitost výsledků. Nevzniká tím automatické placené opakování ani záruka konzistence.
