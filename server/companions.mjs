@@ -10,6 +10,16 @@ export const COMPANION_CATALOG = Object.freeze([
   {id:'pirko-bird',name:'Pírko',kind:'zvídavý ptáček',description:'Ukáže cestu mezi oblaky a všimne si všeho z výšky.',appearance:'Small rounded bird with a short beak, friendly eyes, small rounded wings and a plain tiny cross-body satchel; no other clothes.',character:'Curious, gentle; guides the child through the sky and helps find the way.',artwork:'/assets/companions/pirko-bird.png'}
 ].map((c,index)=>Object.freeze({...c,version:CATALOG_VERSION,index,reference:c.artwork||'/assets/companions-v1.png',referenceCell:c.artwork?{column:0,row:0,columns:1,rows:1}:{column:index%3,row:Math.floor(index/3),columns:3,rows:2}})));
 export const getCompanion = id => COMPANION_CATALOG.find(c=>c.id===id);
+// Configurator recommendations only; these are not provider restrictions.
+const WORLD_COMPANIONS=Object.freeze({
+ 'Kouzelný les':['pip-dog','lisi-fox','borek-dragon','jiskra-unicorn','pirko-bird'],
+ 'Zvířecí kamarádi':['pip-dog','lisi-fox','bublik-dolphin','pirko-bird'],
+ 'Zatoulaný obláček':['borek-dragon','pirko-bird'],
+ 'Podmořský svět':['bublik-dolphin'],
+ 'Vesmír':['blik-robot'],
+ 'Dinosauři':['dino-dinosaur']
+});
+export const recommendedCompanionIds=theme=>!theme?[]:[...(WORLD_COMPANIONS[theme]||COMPANION_CATALOG.map(c=>c.id))];
 export function companionContext(input){
  if(input.companion_mode==='none')return {mode:'none',instruction:'Do not add a recurring companion. The child leads the story.'};
  if(input.companion_mode==='catalog'){const c=getCompanion(input.companion_id);if(!c)throw Error('INVALID_COMPANION');return {mode:'catalog',...c,name:input.companion_name||c.name,instruction:'Keep the same appearance, clothes and character in all relevant scenes. Give this companion a real action matching the illustration. Use only its selected reference cell, never the entire cast.'};}

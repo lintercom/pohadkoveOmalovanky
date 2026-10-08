@@ -1,5 +1,5 @@
 import { PRODUCT, validateInput } from './runtime/product.mjs';
-import { getCompanion } from './runtime/companions.mjs';
+import { getCompanion, recommendedCompanionIds } from './runtime/companions.mjs';
 import { activeInput, buildStoryBrief } from './runtime/story-brief.mjs';
 
 const $=s=>document.querySelector(s), form=$('#configurator'), dialog=$('#check-dialog');
@@ -19,6 +19,13 @@ function summary(target){
 }
 function invalidate(){revision++;controller?.abort();controller=null;checking=false;result=null;$('#continue-payment').hidden=true;$('#copy-status').textContent='';$('#check-result').textContent='Zadání se změnilo. Je potřeba nová kontrola.';}
 function update(){
+ const world=selected('theme'),recommended=recommendedCompanionIds(world);
+ $('#partak').hidden=!world;
+ form.querySelectorAll('input[name="companion"]').forEach(control=>{
+  const visible=!!world&&(!control.value.startsWith('catalog:')||recommended.includes(control.value.slice(8)));
+  control.closest('.pick-option').hidden=!visible;control.disabled=!visible;
+  if(!visible)control.checked=false;
+ });
  $('#custom-companion-field').hidden=selected('companion')!=='custom';
  $('#custom-world-field').hidden=selected('theme')!=='Vlastní téma';
  $('#appearance-field').hidden=!!photo;summary($('#live-summary'));
