@@ -37,3 +37,7 @@ Katalog rozšířen z osmi na sedmnáct originálních postav. Počty pro les, z
 Všech devět nových ilustrací bylo vizuálně prohlédnuto, popisy vzhledu sjednoceny s výsledky. Oli má po jedné cílené opravě ověřených osm chapadel. WebP exporty mají 512 × 512 pixelů, dohromady přibližně 169 KiB. Originály zůstávají mimo checkout; skutečné prompty i oprava jsou v COMPANION_ART_V3.md. Společný sestavovač předává nové popisy do zákaznického promptu.
 
 Všech 31 automatických testů prošlo. Build Workeru obsahuje 48 veřejných souborů; kontrola deseti HTML souborů ověřila odkazy, ID, CSS a PDF. Žádné zákaznické placené AI API nebylo spuštěno. Nová browser QA neproběhla; toto ověření nepotvrzuje skutečné produkční generování ani jeho vizuální konzistenci.
+
+## Grafická sazba vzoru — 8. 10. 2026
+
+Znovu vysázeno šest stran původního příběhu a vyrenderováno všech šest náhledů pro homepage. Přidáno typografické logo s vloženým Nunito Black, barvy webu, úvodní označení pouze na první straně, podpis a nenápadný ukazatel stránky v patičce. Všech šest renderů bylo vizuálně prohlédnuto; bez nových ořezů, překrytí nebo zmenšení původní kreslicí plochy. Text zůstává 15/21 bodů, barvy cílových frází zachovány, scény jsou původní černobílé ilustrace. Ověřeno šest A4 stran na šířku, jediný název a jediné úvodní označení, česká diakritika, značka na každé straně a shodná grafická instrukce v ručním i API sestavovači. Obsah příběhu, konfigurátor a webový layout se nemění.

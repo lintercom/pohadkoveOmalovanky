@@ -1,0 +1,13 @@
+{
+  "version": "2026-10-brand-v1",
+  "brand": "Pohádkové omalovánky",
+  "wordmark": ["Pohádkové", "omalovánky"],
+  "startLabel": "Tady začíná pohádka",
+  "headingFont": "Nunito Black",
+  "ink": "#213E38",
+  "green": "#557B6C",
+  "accent": "#AC492E",
+  "panel": "#FFFDFA",
+  "line": "#E0E5DA",
+  "ribbon": ["#E9BC64", "#D58465", "#91B9B4"]
+}
