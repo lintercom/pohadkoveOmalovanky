@@ -32,6 +32,6 @@ Serverový základ zaznamenává pokusy a náklady, zastaví chybu bez automatic
 
 Existující soukromý web se aktualizuje přes Sites. `scripts/build-github-pages.mjs` připraví samostatný statický export pro `/pohadkoveOmalovanky/`; nasazení GitHub Pages je oddělený krok. Git metadata tohoto exportu se při úklidu nemažou.
 
-Zachovaný vzhled: Nunito / DM Sans, jemné dětské barvy, zaoblené karty a decentní animace s reduced-motion. Homepage nabízí všech šest stran vzoru a PDF. Osm originálních parťáků, vlastní parťák i svět a varianta bez parťáka jsou v samostatném konfigurátoru. Předběžná kontrola neslibuje úspěch generování ani komerční oprávnění.
+Zachovaný vzhled: Nunito / DM Sans, jemné dětské barvy, zaoblené karty a decentní animace s reduced-motion. Homepage nabízí všech šest stran vzoru a PDF. Sedmnáct originálních parťáků, vlastní parťák i svět a varianta bez parťáka jsou v samostatném konfigurátoru. Předběžná kontrola neslibuje úspěch generování ani komerční oprávnění.
 
 Podrobnosti: [kontext](docs/PROJECT_CONTEXT.md), [konfigurátor](docs/CONFIGURATOR.md), [integrace](docs/INTEGRATIONS.md), [ověření](docs/VALIDATION.md), [výzkum](docs/RESEARCH.md). Provozovatel a obchodní podmínky před prodejem stále potřebují doplnění. Kontakt: petrlavikweb@gmail.com.

@@ -29,3 +29,11 @@ Nový dodaný dokument je jediný zdroj všech promptů. Test ověřuje přesnou
 Serverové testy navíc ověřují zastavení bez vizuálního dokladu, zákaz jeho použití jako reference a zákaz doručení bez kontroly celé sady a PDF. Doklady jsou fixture; skutečný hodnotitel ani placená výroba nejsou připojené. 30 testů prošlo. Syntaxe, build Worker a kontrola odkazů, CSS, ID a existujícího PDF jsou ověřené; neproběhlo placené generování ani browser QA.
 
 Odstraněny nahrazené tři promptové podklady, duplicitní sample-page, nepoužívaný globální katalog, staré neodkazované náhledy, místní QA rendery a logy. Zachované zdroje a používaná grafika umožňují reprodukovat aktuální web. Deployment archiv je dočasný a po úspěšném publikování se odstraňuje. Git historie, vnořený Git checkout exportu a uživatelské soubory mimo repo nejsou předmětem úklidu.
+
+## Vyrovnaný katalog parťáků — 8. 10. 2026
+
+Katalog rozšířen z osmi na sedmnáct originálních postav. Počty pro les, zvířata, obláček, moře, vesmír a dinosaury jsou 5, 4, 4, 4, 4, 4. Test ověřuje minimum čtyř v každém světě, platné a neopakující se identifikátory, jedinečná jména a zachování všech možností ve vlastním světě.
+
+Všech devět nových ilustrací bylo vizuálně prohlédnuto, popisy vzhledu sjednoceny s výsledky. Oli má po jedné cílené opravě ověřených osm chapadel. WebP exporty mají 512 × 512 pixelů, dohromady přibližně 169 KiB. Originály zůstávají mimo checkout; skutečné prompty i oprava jsou v COMPANION_ART_V3.md. Společný sestavovač předává nové popisy do zákaznického promptu.
+
+Všech 31 automatických testů prošlo. Build Workeru obsahuje 48 veřejných souborů; kontrola deseti HTML souborů ověřila odkazy, ID, CSS a PDF. Žádné zákaznické placené AI API nebylo spuštěno. Nová browser QA neproběhla; toto ověření nepotvrzuje skutečné produkční generování ani jeho vizuální konzistenci.

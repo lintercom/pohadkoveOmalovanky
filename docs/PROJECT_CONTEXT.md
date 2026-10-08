@@ -8,7 +8,7 @@
 
 Konfigurátor je na /vytvorit/, všechna pole na jedné stránce, nic předvybraného. Vlastní parťák a svět jsou první volby; parťák může také chybět. Formulář není v modálu. Modál následuje po validaci, drží zadání a umožňuje zobrazit a kopírovat samostatný prompt pro ChatGPT. Fotografie se přikládá zvlášť. Konfigurátor je noindex. Nevracet starý průvodce ani výběrové karty na homepage.
 
-Katalog má osm originálních parťáků, včetně delfína a ptáčka. Kontrola rozlišuje technickou podporu, pravidla poskytovatele a komerční oprávnění. Bez blacklistu jmen, tiché náhrady postav či placených zkušebních obrázků. Změna parametrů ruší předchozí schválení. Revize pravidel 1.6-prompt-20261008 zneplatňuje starší tokeny. Pouhá neověřená oprávnění sama schválení neblokují a schválení je nepotvrzuje. Pouze přesné opakovaně odmítnuté zadání se shodným otiskem, poskytovatelem, modelem a verzí pravidel se znovu nespouští; nikdy nevzniká zákaz jména.
+Katalog má sedmnáct originálních parťáků ve verzi 2026-10-v3. Každý připravený svět nabízí nejméně čtyři vhodné postavy; kouzelný les zachovává pět. Pořadí je svět → parťák a parťáci se zobrazí až po výběru světa. Kontrola rozlišuje technickou podporu, pravidla poskytovatele a komerční oprávnění. Bez blacklistu jmen, tiché náhrady postav či placených zkušebních obrázků. Změna parametrů ruší předchozí schválení. Revize pravidel 1.6-prompt-20261008 zneplatňuje starší tokeny. Pouhá neověřená oprávnění sama schválení neblokují a schválení je nepotvrzuje. Pouze přesné opakovaně odmítnuté zadání se shodným otiskem, poskytovatelem, modelem a verzí pravidel se znovu nespouští; nikdy nevzniká zákaz jména.
 
 ## Jediný aktuální zdroj promptu
 
@@ -22,7 +22,7 @@ Výstup 1.6 zahrnuje world_rules_cs, invariant_features_en, allowed_state_change
 
 Skutečný poskytovatel, platby a automatický vizuální hodnotitel nejsou připojeni. Web to přiznává; produkční akce jsou bez konfigurace zavřené. order-engine vyžaduje důvěryhodné doklady kontroly každého skutečného obrázku, celé sady a vyrenderovaného PDF. Bez nich nenabídne stažení a vadný obrázek nepředá jako ověřenou referenci. Kontrolu a všechny její případné náklady musí skutečně zajistit produkční adaptér; testy používají fixture doklady, žádné placené API.
 
-30 testů pokrývá propagaci přesného promptu, ruční/produkční režim, novou strukturu a obrazové vstupy, kontroly a zastavení bez dalšího pokusu. Nejde o měření kvality obrázků ani nákladů reálné výroby. Browser QA byla dříve blokována politikou; neobcházet a nepředstírat ji.
+31 testů pokrývá propagaci přesného promptu, ruční/produkční režim, novou strukturu a obrazové vstupy, kontroly a zastavení bez dalšího pokusu i nabídku alespoň čtyř parťáků v každém světě. Nejde o měření kvality obrázků ani nákladů reálné výroby. Browser QA byla dříve blokována politikou; neobcházet a nepředstírat ji.
 
 Nepoužívané staré šablony, duplicitní sample-page, globální catalog-data, neodkazované staré náhledy a místní QA/log artefakty byly odstraněny. Zachovat zdroje, testy, používané ilustrace, PDF a Git historii. Neuklízet cizí projekt ani vnořené .git exportu pages-dist.
 
