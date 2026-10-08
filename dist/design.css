@@ -111,14 +111,3 @@ body{position:relative;isolation:isolate}
 body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:url('/assets/background/story-doodles-v1.webp');background-repeat:repeat;background-size:560px 560px;opacity:.24;mask-image:radial-gradient(ellipse 48% 32% at 3% 20%,#000 5%,transparent 100%),radial-gradient(ellipse 43% 35% at 98% 73%,#000 8%,transparent 100%);mask-size:100% 1400px;mask-repeat:repeat-y;-webkit-mask-image:radial-gradient(ellipse 48% 32% at 3% 20%,#000 5%,transparent 100%),radial-gradient(ellipse 43% 35% at 98% 73%,#000 8%,transparent 100%);-webkit-mask-size:100% 1400px;-webkit-mask-repeat:repeat-y}
 @media(max-width:600px){body::before{background-size:420px 420px;opacity:.19;mask-size:100% 1100px;-webkit-mask-size:100% 1100px}}
 @media print{body::before{display:none}}
-
-/* Smaller, lighter paper illustrations extend subtly beneath the cards. */
-.creation-journey,.faq{position:relative;isolation:isolate}
-body{overflow-x:clip}
-.margin-scene{display:block;position:absolute;z-index:-1;width:clamp(270px,23vw,370px);aspect-ratio:1;background-color:#806a50;opacity:.16;mask-image:var(--scene);mask-size:contain;mask-position:center;mask-repeat:no-repeat;-webkit-mask-image:var(--scene);-webkit-mask-size:contain;-webkit-mask-position:center;-webkit-mask-repeat:no-repeat;pointer-events:none;user-select:none}
-.margin-scene-space{left:clamp(-90px,-4vw,-40px);top:180px;transform:rotate(-7deg)}
-.margin-scene-children{right:clamp(-90px,-4vw,-40px);bottom:-30px;transform:rotate(5deg)}
-.margin-scene-forest{left:clamp(-85px,-4vw,-35px);top:90px;width:clamp(270px,22vw,350px);transform:rotate(-4deg);opacity:.14}
-@media(max-width:900px){.margin-scene{width:280px;opacity:.13}.margin-scene-space{left:-100px;top:160px}.margin-scene-children{right:-100px;bottom:0}.margin-scene-forest{left:-100px;top:120px;width:270px;opacity:.12}}
-@media(max-width:600px){.margin-scene{width:220px;opacity:.11}.margin-scene-space{left:-100px;top:170px}.margin-scene-children{right:-100px;bottom:-30px}.margin-scene-forest{left:-110px;top:100px;width:230px;opacity:.10}}
-@media print{.margin-scene{display:none}}
