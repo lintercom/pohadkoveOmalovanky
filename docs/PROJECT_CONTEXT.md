@@ -45,3 +45,7 @@ Homepage nyní řadí výzvu Další hrdina? Ten váš. mezi svislou cestu a ča
 
 ## Zkrácení homepage — 8. 10. 2026
 Na přání uživatele odstraněny hero štítky věku/PDF, hero textový odkaz na vzor, eyebrow a nápověda cesty, čtyři štítky místa u kroků a odstavec pod cestou o ruční tvorbě. Funkční náhled z hero obrázku a odkaz pod cestou zachovány. FAQ eyebrow nyní CO BY VÁS JEŠTĚ MOHLO ZAJÍMAT ..... .
+
+
+## Jemné čmáranicové pozadí — 8. 10. 2026
+Sdílené béžové pozadí všech stránek doplňuje transparentní vzor assets/background/story-doodles-v1.webp inspirovaný referencí uživatele. Dekorativní body::before je za obsahem, nebere vstup a neovlivňuje rozměry. Dvě měkké opakované radiální masky nechávají motivy lokálně vystupovat u okrajů a mizet směrem do stránky. Na mobilu menší a slabší, v tisku vypnuté. Karty a dialogy zachovávají neprůhledný podklad. Záznam obrázku v docs/BACKGROUND_ART.md.
