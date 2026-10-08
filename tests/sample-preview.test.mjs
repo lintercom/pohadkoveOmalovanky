@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 
-test('complete sample is in the dialog, both hero triggers point to it',async()=>{
+test('complete sample is in the dialog, hero image and journey link point to it',async()=>{
  const html=await readFile(new URL('../dist/index.html',import.meta.url),'utf8');
  const main=html.match(/<main id="main">([\s\S]*?)<\/main>/)[1];
  const dialog=html.match(/<dialog id="preview"[\s\S]*?<\/dialog>/)[0];

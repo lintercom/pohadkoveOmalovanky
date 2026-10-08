@@ -41,3 +41,7 @@ Aktuální sekce Jak to funguje nahrazuje záložky čtyřmi nativními details/
 
 ## Výzva před otázkami — 8. 10. 2026
 Homepage nyní řadí výzvu Další hrdina? Ten váš. mezi svislou cestu a časté otázky. CTA odkazuje na /vytvorit/. Karta používá původní teplou žlutou, zaoblení a typografii; nová omalovánková scéna chlapečka s liškou Lisou je v assets/invitation/boy-and-lisa.webp. Dva sloupce na desktopu a tabletu, jeden pod 520 px. Podklady ilustrace v docs/INVITATION_ART.md.
+
+
+## Zkrácení homepage — 8. 10. 2026
+Na přání uživatele odstraněny hero štítky věku/PDF, hero textový odkaz na vzor, eyebrow a nápověda cesty, čtyři štítky místa u kroků a odstavec pod cestou o ruční tvorbě. Funkční náhled z hero obrázku a odkaz pod cestou zachovány. FAQ eyebrow nyní CO BY VÁS JEŠTĚ MOHLO ZAJÍMAT ..... .

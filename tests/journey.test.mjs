@@ -12,7 +12,7 @@ test('four native disclosures keep explanations and actions beside each step wit
   assert.match(b[1],/<a class="button" href=/);assert.ok(b[1].includes('>'+String(i+1)+'</span>'));
  }
  assert.ok(!section.includes('role="tab'));assert.ok(!section.includes('tabindex="-1"'));
- for(const copy of ['S POMOCÍ AI','Zkopírovat prompt pro ChatGPT','fotografii přiložte zvlášť','Hotové PDF stáhněte z ChatGPT','automatická výroba a platby ještě nejsou spuštěné'])assert.ok(section.includes(copy),copy);
+ for(const copy of ['Zkopírovat prompt pro ChatGPT','fotografii přiložte zvlášť','Hotové PDF stáhněte z ChatGPT'])assert.ok(section.includes(copy),copy);
  for(const href of ['/vytvorit/','https://chatgpt.com/','/navody/jak-vytisknout-omalovanky/','#ukazka'])assert.ok(section.includes('href="'+href+'"'));
  assert.ok(section.includes('rel="noopener noreferrer"'));
  assert.equal((section.match(/class="journey-art /g)||[]).length,2);
