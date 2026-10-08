@@ -45,3 +45,7 @@ Znovu vysázeno šest stran původního příběhu a vyrenderováno všech šest
 ## Přesun ukázky do modálu — 8. 10. 2026
 
 Odstraněna samostatná ukázková sekce; všech šest stran a PDF jsou v existujícím nativním dialogu, otevřeném z hero obrázku i textového odkazu. Dva nové testy ověřují HTML umístění a logiku skutečných JS skriptů v DOM simulaci: oba spouštěče, listování, klávesové šipky, meze a focus při deaktivaci tlačítka, přímý výběr stran, návrat focusu na správný spouštěč, kliknutí na pozadí a starý hash odkaz. Celkem 33 testů, syntaktické a asset kontroly a build Workeru prošly. Nejde o browser QA; nativní focus trap, Escape a mobilní vykreslení nebyly nově ověřeny v prohlížeči. Obrázky, PDF a konfigurátor zůstávají beze změny.
+
+## Logo v levém dolním rohu PDF — 8. 10. 2026
+
+Logo přesunuto ze záhlaví první strany do levého dolního rohu všech šesti stran. Dvouřádkový slovní znak s tříbarevným podtržením nahrazuje původní jednořádkový podpis. Znovu vyrenderováno a vizuálně prohlédnuto všech šest stran bez překrytí kresby. Extrakce PDF ověřila právě jeden výskyt obou řádků loga na každé straně a jeho souřadnice vlevo dole. Velikost a umístění ilustrací, obsah textů a barevné fráze zachovány. Stejné umístění ukládá také společná grafická instrukce pro ruční/API sestavovač.

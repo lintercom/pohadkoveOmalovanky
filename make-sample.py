@@ -34,20 +34,18 @@ def ribbon(x,y,width,height):
         c.roundRect(x+i*width/3,y,width/3+0.4,height,height/2,fill=1,stroke=0)
 
 def opening_header(margin):
-    color('green');c.setFont('Brand',13)
-    c.drawString(margin,h-37,design['wordmark'][0])
-    color('ink');c.setFont('Brand',21)
-    c.drawString(margin,h-57,design['wordmark'][1])
-    ribbon(margin+1,h-65,126,3)
     color('accent');c.setFont('Brand',9)
-    c.drawString(210,h-33,design['startLabel'])
+    c.drawString(margin,h-33,design['startLabel'])
     color('ink');c.setFont('Brand',24)
-    assert pdfmetrics.stringWidth(story['title_cs'],'Brand',24)<w-240
-    c.drawString(210,h-59,story['title_cs'])
+    assert pdfmetrics.stringWidth(story['title_cs'],'Brand',24)<w-2*margin
+    c.drawString(margin,h-59,story['title_cs'])
 
 def footer(index,margin):
-    color('green');c.setFont('Brand',9)
-    c.drawString(margin,17,design['brand'])
+    color('green');c.setFont('Brand',7)
+    c.drawString(margin,27,design['wordmark'][0])
+    color('ink');c.setFont('Brand',11)
+    c.drawString(margin,15,design['wordmark'][1])
+    ribbon(margin+0.5,10,66,2)
     start=w-margin-110
     for i in range(6):
         c.setFillColor(HexColor(design['green'] if i==index else design['line']))
@@ -76,7 +74,8 @@ doc=PdfReader(pdf);assert len(doc.pages)==6
 for i,p in enumerate(doc.pages):
     text=p.extract_text();assert story['pages'][i]['color_target']['phrase_cs'] in text
     assert (story['title_cs'] in text)==(i==0)
-    assert design['brand'] in text
+    assert text.count(design['wordmark'][0])==1
+    assert text.count(design['wordmark'][1])==1
     assert (design['startLabel'] in text)==(i==0)
 preview=root/'dist/assets/story';preview.mkdir(parents=True,exist_ok=True)
 rendered=pdfium.PdfDocument(str(pdf))
