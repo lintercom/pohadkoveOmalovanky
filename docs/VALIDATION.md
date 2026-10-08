@@ -59,3 +59,7 @@ Sekce postupu přepracována na čtyři přístupné záložky s číslovanou pr
 
 ## Svislá cesta a rozbalovací bubliny — 8. 10. 2026
 35 automatických testů prošlo. Testy nové sekce ověřují čtyři nativní rozbalovací kroky s vlastními odkazy a vysvětlením, pravdivý ruční postup, a v DOM simulaci přepočet křivky po rozbalení a při šířce 320 px. Interakce používá nativní summary (klávesnice i bez JS), respektuje reduced-motion. Obrázky vizuálně prohlédnuty a exportovány s průhledností. Jde o kontrolu kódu a simulaci, nikoli novou vizuální browser QA.
+
+
+## Výzva před otázkami — 8. 10. 2026
+Kontrola generovaného HTML ověřila jedinečnou CTA sekci mezi cestou a FAQ, odkaz do konfigurátoru a alternativní text nové ilustrace. Čtyři související testy cesty a náhledu příběhu prošly. Responzivní pravidla zkontrolována v kódu; nová browser QA neproběhla.

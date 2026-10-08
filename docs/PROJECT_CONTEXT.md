@@ -37,3 +37,7 @@ Kontakt je petrlavikweb@gmail.com. Identita provozovatele a obchodní podmínky 
 
 ## Svislá pohádková cesta — 8. 10. 2026
 Aktuální sekce Jak to funguje nahrazuje záložky čtyřmi nativními details/summary bublinami podél jemně klikaté linky. Vysvětlení a CTA jsou uvnitř konkrétního kroku; více kroků lze otevřít současně i bez JS. journey.js pouze přizpůsobuje dekorativní křivku změnám velikosti, fontů a rozbalení. Mobil používá jeden sloupec s malým střídavým odsazením. Dvě nové transparentní ilustrace v assets/journey; záznam generování v docs/JOURNEY_ART.md. Skutečný ruční postup i ostatní části webu zachovány.
+
+
+## Výzva před otázkami — 8. 10. 2026
+Homepage nyní řadí výzvu Další hrdina? Ten váš. mezi svislou cestu a časté otázky. CTA odkazuje na /vytvorit/. Karta používá původní teplou žlutou, zaoblení a typografii; nová omalovánková scéna chlapečka s liškou Lisou je v assets/invitation/boy-and-lisa.webp. Dva sloupce na desktopu a tabletu, jeden pod 520 px. Podklady ilustrace v docs/INVITATION_ART.md.
