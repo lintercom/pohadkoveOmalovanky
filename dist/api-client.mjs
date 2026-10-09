@@ -4,7 +4,7 @@ export const API_CONFIG = Object.freeze({
   publishableKey: 'sb_publishable_W2IVdkudVTNMVxh8bcO2mQ_fQhJVP-x'
 });
 export function apiFetch(path, options = {}, fetchImpl = fetch) {
-  if (!['readiness', 'preflight', 'checkout'].includes(path)) throw Error('UNKNOWN_API_ROUTE');
+  if (!['readiness', 'preflight', 'checkout','admin/session','admin/overview','admin/orders','admin/checks','admin/order','admin/note','admin/pdf','admin/settings'].includes(path.split('?')[0])) throw Error('UNKNOWN_API_ROUTE');
   return fetchImpl(`${API_CONFIG.base}/${path}`, {
     ...options, credentials: 'omit', redirect: 'error', cache: 'no-store',
     headers: { ...options.headers, apikey: API_CONFIG.publishableKey }

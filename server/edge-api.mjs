@@ -1,11 +1,13 @@
 import { preflight, unavailable } from './preflight.mjs';
 import { PRODUCT } from './product.mjs';
+import { createAdminApi } from './admin-api.mjs';
 const allowedOrigins = new Set(['http://127.0.0.1:4173', 'http://localhost:4173', 'https://lintercom.github.io', 'https://moje-pohadka-kouzelne-omalovanky.lifecore.chatgpt.site']);
 export function createEdgeApi({ backend, publishableKey }) {
   if (!backend || !publishableKey) throw Error('EDGE_CONFIGURATION_REQUIRED');
+  const adminApi = createAdminApi(backend);
   return async function handle(request) {
     const origin = request.headers.get('origin');
-    const cors = origin && allowedOrigins.has(origin) ? { 'access-control-allow-origin': origin, 'access-control-allow-methods': 'GET,POST,OPTIONS', 'access-control-allow-headers': 'apikey,content-type', vary: 'Origin' } : {};
+    const cors = origin && allowedOrigins.has(origin) ? { 'access-control-allow-origin': origin, 'access-control-allow-methods': 'GET,POST,OPTIONS', 'access-control-allow-headers': 'apikey,content-type,authorization', vary: 'Origin' } : {};
     const reply = (data, status = 200) => Response.json(data, { status, headers: { ...cors, 'cache-control': 'no-store', 'x-robots-tag': 'noindex', 'x-content-type-options': 'nosniff' } });
     if (origin && !allowedOrigins.has(origin)) return reply({ error: 'ORIGIN_NOT_ALLOWED' }, 403);
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
@@ -13,6 +15,7 @@ export function createEdgeApi({ backend, publishableKey }) {
     // This key identifies the application, not a signed-in customer/admin.
     if (request.headers.get('apikey') !== publishableKey) return reply({ error: 'API_KEY_REQUIRED' }, 401);
     const route = new URL(request.url).pathname.split('/').at(-1);
+    if (new URL(request.url).pathname.includes('/story-api/admin/')) return adminApi(request, route, reply);
     if (route === 'readiness' && request.method === 'GET') {
       try { await backend.verifyConnection(); return reply({ ...unavailable(), configured: true, database_connected: true, generation_available: false, checkout_available: false }); }
       catch { return reply({ ...unavailable(), configured: false, database_connected: false }, 503); }

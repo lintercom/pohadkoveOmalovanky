@@ -30,6 +30,41 @@ export function createSupabaseBackend({ url, secretKey, fetchImpl = fetch, clock
     return `/storage/v1/object/${bucket}/${key.split('/').map(encodeURIComponent).join('/')}`;
   }
   return {
+    async verifyAdmin(accessToken) {
+      if (!accessToken || accessToken.length > 4096) return null;
+      const userResponse = await fetchImpl(new URL('/auth/v1/user', origin), { headers: { apikey: secretKey, authorization: `Bearer ${accessToken}` }, redirect: 'error', signal: AbortSignal.timeout(15000) });
+      if (!userResponse.ok) return null;
+      const user = await userResponse.json(); if (!uuid.test(user.id)) return null;
+      let sessionId; try { sessionId = JSON.parse(atob(accessToken.split('.')[1].replaceAll('-','+').replaceAll('_','/'))).session_id; } catch { return null; }
+      if (!uuid.test(sessionId)) return null;
+      return (await request('/rest/v1/rpc/verify_story_admin_session', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({p_user:user.id,p_session:sessionId}) })).json();
+    },
+    async adminOverview() {
+      return (await request('/rest/v1/rpc/story_admin_overview', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })).json();
+    },
+    async adminList(kind, { offset = 0, status = '', id = '' } = {}) {
+      const select = kind === 'orders' ? 'id,created_at,status,amount,currency,cost_czk,budget_czk,expires_at,reason' : 'id,created_at,outcome,provider,rules_version,model,reasons,checks';
+      const query = new URLSearchParams({ select, order: 'created_at.desc', limit: '26', offset: String(offset) });
+      if (status) query.set(kind === 'orders' ? 'status' : 'outcome', `eq.${status}`);
+      if (id) query.set('id', `eq.${id}`);
+      return (await request(`/rest/v1/story_${kind === 'orders' ? 'orders' : 'checks'}?${query}`)).json();
+    },
+    async adminOrder(id) {
+      const query = new URLSearchParams({ id: `eq.${id}`, select: 'id,created_at,status,amount,currency,cost_czk,budget_czk,expires_at,reason,pdf_key', limit: '1' });
+      const rows = await (await request(`/rest/v1/story_orders?${query}`)).json(); if (!rows[0]) return null;
+      const attempts = await (await request('/rest/v1/story_attempts?' + new URLSearchParams({ order_id: `eq.${id}`, select: 'id,stage,status,started_at,completed_at,provider,model,cost_czk', order: 'started_at.asc' }))).json();
+      const notes = await (await request('/rest/v1/story_admin_notes?' + new URLSearchParams({ order_id: `eq.${id}`, select: 'note,updated_at', limit: '1' }))).json();
+      return { ...rows[0], attempts, note: notes[0]?.note || '' };
+    },
+    async adminSaveNote(id, note, userId) {
+      await request('/rest/v1/story_admin_notes', { method: 'POST', headers: { 'content-type': 'application/json', prefer: 'resolution=merge-duplicates,return=minimal' }, body: JSON.stringify({ order_id: id, note, updated_by: userId, updated_at: new Date(clock()).toISOString() }) });
+    },
+    async adminSettings() {
+      return (await (await request('/rest/v1/story_admin_settings?id=eq.1&select=minute_limit,day_limit,updated_at')).json())[0];
+    },
+    async adminSaveSettings(settings) {
+      await request('/rest/v1/story_admin_settings?id=eq.1', { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...settings, updated_at: new Date(clock()).toISOString() }) });
+    },
     async consumeCheckBudget() {
       return (await (await request('/rest/v1/rpc/consume_story_check_budget', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })).json()) === true;
     },
