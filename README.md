@@ -12,7 +12,7 @@ npm run check
 npm start
 ```
 
-Lokální náhled: http://127.0.0.1:4173. Build sestaví aktuální prompty, HTML stránky a Worker. Kontroly ověřují odkazy, assety a 30 scénářů bez placených API.
+Lokální náhled: http://127.0.0.1:4173. Build sestaví aktuální prompty, HTML stránky a Worker. Kontroly ověřují odkazy, assety a automatické scénáře bez placených API.
 
 ## Zdroj řídícího promptu
 
@@ -34,4 +34,4 @@ Existující soukromý web se aktualizuje přes Sites. `scripts/build-github-pag
 
 Zachovaný vzhled: Nunito / DM Sans, jemné dětské barvy, zaoblené karty a decentní animace s reduced-motion. Homepage nabízí všech šest stran vzoru a PDF. Sedmnáct originálních parťáků, vlastní parťák i svět a varianta bez parťáka jsou v samostatném konfigurátoru. Předběžná kontrola neslibuje úspěch generování ani komerční oprávnění.
 
-Podrobnosti: [kontext](docs/PROJECT_CONTEXT.md), [konfigurátor](docs/CONFIGURATOR.md), [integrace](docs/INTEGRATIONS.md), [ověření](docs/VALIDATION.md), [výzkum](docs/RESEARCH.md). Provozovatel a obchodní podmínky před prodejem stále potřebují doplnění. Kontakt: petrlavikweb@gmail.com.
+Podrobnosti: [kontext](docs/PROJECT_CONTEXT.md), [konfigurátor](docs/CONFIGURATOR.md), [integrace](docs/INTEGRATIONS.md), [ověření](docs/VALIDATION.md), [výzkum](docs/RESEARCH.md), [co dokončit](docs/DODELAT.md). Provozovatel a obchodní podmínky před prodejem stále potřebují doplnění. Kontakt: petrlavikweb@gmail.com.

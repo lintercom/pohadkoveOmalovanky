@@ -4,7 +4,7 @@ Implementace v existujícím projektu, bez změny grafické identity. `/vytvorit
 
 ## Chování
 
-Pět sekcí pod sebou: dítě → parťák → svět → přání → živé shrnutí. Žádný vícekrokový formulář. Věk i obě skupiny začínají bez výběru; vlastní možnost je první, bez parťáka je dostupná ve stejné skupině. Používáme nativní radio inputy ve fieldset/legend, focus rámeček, označení zaškrtnutím a okrajem. Mobilní mřížka má dva sloupce, žádný vodorovný posuvník.
+Pět sekcí pod sebou: dítě → svět → vhodní parťáci → přání → živé shrnutí. Žádný vícekrokový formulář. Věk i obě skupiny začínají bez výběru; vlastní možnost je první, bez parťáka je dostupná ve stejné skupině. Používáme nativní radio inputy ve fieldset/legend, focus rámeček, označení zaškrtnutím a okrajem. Mobilní mřížka má dva sloupce, žádný vodorovný posuvník.
 
 Vlastní texty zůstávají v polích při přepnutí. `activeInput()` je vyřadí ze skutečného zadání, když nejsou aktivní. Fotografii lze odstranit; bez ní zůstává dřívější požadavek na krátký popis vzhledu. Údaje jsou v paměti stránky, ne v URL, localStorage či analytice.
 
@@ -18,8 +18,8 @@ Prompt obsahuje stabilní vizuální popis katalogového parťáka bez interníc
 
 ## Ověření a meze
 
-24 automatických testů prošlo: původních 18 serverových + 6 nových pro obsah promptu, aktivní volby a zachování draftu, známou postavu, variantu bez parťáka/fotografii, shodu API a ručního zadání, odkazy/pořadí/noindex/nepředvybrané hodnoty. Syntaxe modulů a kontrola lokálních odkazů prošla. Sestavený Worker vrací 200 pro konfigurátor i všechny jeho ESM závislosti se správným MIME a noindex pro stránku.
+Aktuální ověření a jeho omezení jsou v VALIDATION.md. Po výběru světa se zobrazí doporučení parťáci; každý připravený svět má alespoň čtyři originální možnosti.
 
 Kontrolní stavy serveru jsou ověřené automaticky přes testovací adaptéry. Neproběhla plná interakční prohlížečová kontrola mobilu, klávesnice a schránky: místní browserová inspekce byla v tomto chatu dříve blokovaná. Responzivní CSS, nativní radio/dialog, focus a fallback jsou implementované a zkontrolované v kódu; neoznačujeme to za browserový nebo čtečkový test.
 
-Skutečný poskytovatel kontroly, platba a placené generování stále nejsou připojené. Tato verze umožňuje kompletní zadání a ruční použití v ChatGPT. Publikování přes Sites je výslovně autorizované aktuálním zadáním; zachová se stávající soukromé publikum.
+Skutečný poskytovatel kontroly, platba a placené generování stále nejsou připojené. Tato verze umožňuje kompletní zadání a ruční použití v ChatGPT. Hostovaný náhled zachovává stávající soukromé publikum.
