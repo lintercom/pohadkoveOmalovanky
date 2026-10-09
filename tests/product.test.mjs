@@ -21,27 +21,27 @@ test('known names accepted; server field limits and input normalization',()=>{
 test('missing adapters and spoofed approval fail closed',async()=>{
  const result=await preflight({...input,approved:true,PREFLIGHT_STATUS:'approved'});
  assert.equal(result.status,'needs_review');assert.equal(result.can_generate,false);
- assert.equal((await preflight(input,new Blob(['fake'],{type:'image/png'}))).status,'blocked');
+ assert.equal((await preflight({...input,appearance_description:''})).outcome,'clarify');
 });
-test('approval is bound to exact inputs, photo, provider, rules and expiry',async()=>{
- const s=services();const photo=png('first');const result=await preflight(input,photo,s);
- assert.equal(result.status,'approved');await requireApproval(result.approval_token,input,photo,s);
- for(const [changed,file,svc] of [[{...input,child_name:'Anna'},photo,s],[input,png('other'),s],[input,photo,{...s,provider:'other'}]]) await assert.rejects(requireApproval(result.approval_token,changed,file,svc),/PREFLIGHT_NOT_APPROVED/);
+test('approval is bound to exact inputs, provider, rules and expiry',async()=>{
+ const s=services();const result=await preflight(input,s);
+ assert.equal(result.status,'approved');await requireApproval(result.approval_token,input,s);
+ for(const [changed,svc] of [[{...input,child_name:'Anna'},s],[{...input,appearance_description:'Jiné vlasy'},s],[input,{...s,provider:'other'}]]) await assert.rejects(requireApproval(result.approval_token,changed,svc),/PREFLIGHT_NOT_APPROVED/);
  const saved=await s.loadApproval(result.approval_token);await s.saveApproval({...saved,expiresAt:Date.now()-1});
- await assert.rejects(requireApproval(result.approval_token,input,photo,s),/PREFLIGHT_NOT_APPROVED/);
+ await assert.rejects(requireApproval(result.approval_token,input,s),/PREFLIGHT_NOT_APPROVED/);
 });
 test('budget, availability, moderation and failures prevent approval',async()=>{
  for(const extra of [{checkProvider:async()=>({available:false})},{checkProvider:async()=>({available:true,supportsExactSettings:true,estimatedTotalCost:81})},{moderate:async()=>({status:'needs_review'})},{moderate:async()=>{throw Error('offline');}}]) {
-  const result=await preflight(input,null,services(extra));assert.equal(result.status,'needs_review');assert.equal(result.can_generate,false);
+  const result=await preflight(input,services(extra));assert.equal(result.status,'needs_review');assert.equal(result.can_generate,false);
  }
- assert.equal((await preflight(input,null,services({moderate:async()=>({status:'blocked'})}))).status,'blocked');
+ assert.equal((await preflight(input,services({moderate:async()=>({status:'blocked'})}))).status,'blocked');
 });
 test('historical rejection never becomes a name blacklist',async()=>{
- const normalized=validateInput(input).input;const key=await fingerprint(normalized,null,'test-provider');
+ const normalized=validateInput(input).input;const key=await fingerprint(normalized,'test-provider');
  const rejection={repeated:true,fingerprint:key,provider:'test-provider',model:IMAGE_SETTINGS.model,rulesVersion:PRODUCT.rulesVersion};
- assert.equal((await preflight(input,null,services({findRejection:async()=>rejection}))).status,'blocked');assert.equal((await preflight(input,null,services({findRejection:async()=>({...rejection,repeated:false})}))).status,'approved');assert.equal((await preflight(input,null,services({findRejection:async()=>({...rejection,rulesVersion:'old'})}))).status,'approved');
- assert.equal((await preflight(input,null,services({findRejection:async()=>({...rejection,provider:'other'})}))).status,'approved');
- assert.equal((await preflight({...input,custom_companion:'Jiná postava'},null,services({findRejection:async()=>rejection}))).status,'approved');
+ assert.equal((await preflight(input,services({findRejection:async()=>rejection}))).status,'blocked');assert.equal((await preflight(input,services({findRejection:async()=>({...rejection,repeated:false})}))).status,'approved');assert.equal((await preflight(input,services({findRejection:async()=>({...rejection,rulesVersion:'old'})}))).status,'approved');
+ assert.equal((await preflight(input,services({findRejection:async()=>({...rejection,provider:'other'})}))).status,'approved');
+ assert.equal((await preflight({...input,custom_companion:'Jiná postava'},services({findRejection:async()=>rejection}))).status,'approved');
 });
 test('six pages, one root title, age length, color and references validated',()=>{
  assert.equal(validateStory(story(),4).pages.length,6);
@@ -51,14 +51,14 @@ test('six pages, one root title, age length, color and references validated',()=
  assert.ok(html.includes('&lt;script&gt;'));assert.ok(html.includes('color:#C45B00'));assert.ok(!html.includes('<script>'));
 });
 test('trusted developer approval and verified payment; customer cannot set image quality',async()=>{
- const s=services({verifyPayment:async()=>true});const approved=await preflight(input,null,s);
+ const s=services({verifyPayment:async()=>true});const approved=await preflight(input,s);
  const request=await prepareStoryRequest({token:approved.approval_token,input:{...input,quality:'high',PREFLIGHT_STATUS:'approved'},orderId:'order-test'},s);
  assert.ok(request.messages[0].content.includes('PREFLIGHT_STATUS=approved'));
  assert.ok(!request.messages[1].content.includes('PREFLIGHT_STATUS'));
  await assert.rejects(prepareStoryRequest({token:approved.approval_token,input,orderId:'unpaid'},{...s,verifyPayment:async()=>false}),/PAYMENT_NOT_VERIFIED/);
  const jobs=createImageJobs(story(),4,[png('reference')]);assert.equal(jobs.length,6);
  for(const job of jobs){assert.equal(job.endpoint,'edits');assert.equal(job.maxAttempts,1);assert.equal(job.body.quality,'medium');assert.equal(job.body.size,'1536x1024');assert.equal(job.body.n,1);assert.ok(!job.body.prompt.includes('{{image_prompt_en}}'));assert.ok(job.body.prompt.includes('Match the NEW scene'));assert.ok(job.body.prompt.includes('part counts'));assert.ok(job.body.prompt.includes('Change only the states explicitly specified'));assert.ok(job.body.prompt.includes('world_rules_cs'));assert.ok(job.body.prompt.includes('Black and white child pointing at a large flower.'));assert.ok(!Object.hasOwn(job.body,'input_fidelity'));assert.ok(job.body.image[0] instanceof Blob);}
- assert.equal(createImageJobs(story(),4)[0].endpoint,'generations');assert.throws(()=>createImageJobs(story(),4,['photo.png']),/ACTUAL_IMAGE_REFERENCES_REQUIRED/);
+ assert.equal(createImageJobs(story(),4)[0].endpoint,'generations');assert.throws(()=>createImageJobs(story(),4,['reference.png']),/ACTUAL_IMAGE_REFERENCES_REQUIRED/);
 });
 test('real request handlers return fail closed status and reject malformed/cross-origin calls',async()=>{
  const response=await handleApi(new Request('https://example.com/api/preflight',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({...input,approved:true})}));
@@ -66,6 +66,7 @@ test('real request handlers return fail closed status and reject malformed/cross
  for(const route of ['checkout','generate'])assert.equal((await handleApi(new Request('https://example.com/api/'+route,{method:'POST'}))).status,503);
  assert.equal((await handleApi(new Request('https://example.com/api/preflight',{method:'POST',headers:{origin:'https://other.com'},body:'{}'}))).status,403);
  assert.equal((await handleApi(new Request('https://example.com/api/preflight',{method:'POST',body:'bad json'}))).status,400);
- const form=new FormData();form.set('input',JSON.stringify(input));form.set('photo',png('upload'),'photo.png');
+ const form=new FormData();form.set('input',JSON.stringify(input));
  assert.equal((await (await handleApi(new Request('https://example.com/api/preflight',{method:'POST',body:form}))).json()).status,'needs_review');
+ form.set('attachment',png('unsupported'),'reference.png');assert.equal((await handleApi(new Request('https://example.com/api/preflight',{method:'POST',body:form}))).status,400);
 });

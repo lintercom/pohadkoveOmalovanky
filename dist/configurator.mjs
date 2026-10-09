@@ -4,7 +4,7 @@ import { activeInput, buildStoryBrief } from './runtime/story-brief.mjs';
 import { apiFetch } from './api-client.mjs';
 
 const $=s=>document.querySelector(s), form=$('#configurator'), dialog=$('#check-dialog');
-let photo=null, photoURL=null, photoIssue='', checking=false, revision=0, controller=null, result=null, opener=null, paymentPending=false;
+let checking=false, revision=0, controller=null, result=null, opener=null, paymentPending=false;
 const selected=name=>form.querySelector(`input[name="${name}"]:checked`)?.value||'';
 function currentInput(){
  const choice=selected('companion');
@@ -13,7 +13,7 @@ function currentInput(){
 }
 function summary(target){
  const input=currentInput(),c=getCompanion(input.companion_id);
- const values=[['Hlavní hrdina',input.child_name.trim()||'Doplňte jméno'],['Věk',input.child_age?input.child_age+' let':'Vyberte věk'],['Parťák',input.companion_mode==='none'?'Bez parťáka':input.companion_mode==='custom'?(input.custom_companion.trim()||'Doplňte vlastního parťáka'):c?c.name+' · '+c.kind:'Vyberte parťáka'],['Svět',input.theme==='Vlastní téma'?(input.custom_theme.trim()||'Doplňte vlastní svět'):input.theme||'Vyberte svět'],['Podoba',photo?'S fotografií':input.appearance_description.trim()||'Doplňte popis nebo fotografii']];
+ const values=[['Hlavní hrdina',input.child_name.trim()||'Doplňte jméno'],['Věk',input.child_age?input.child_age+' let':'Vyberte věk'],['Parťák',input.companion_mode==='none'?'Bez parťáka':input.companion_mode==='custom'?(input.custom_companion.trim()||'Doplňte vlastního parťáka'):c?c.name+' · '+c.kind:'Vyberte parťáka'],['Svět',input.theme==='Vlastní téma'?(input.custom_theme.trim()||'Doplňte vlastní svět'):input.theme||'Vyberte svět'],['Podoba',input.appearance_description.trim()||'Doplňte popis vzhledu']];
  if(input.personal_wish.trim())values.push(['Další přání',input.personal_wish.trim()]);
  if(input.requested_scenes.trim())values.push(['Scény',input.requested_scenes.trim()]);
  target.replaceChildren(...values.flatMap(([label,value])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;return [dt,dd];}));
@@ -29,13 +29,13 @@ function update(){
  });
  $('#custom-companion-field').hidden=selected('companion')!=='custom';
  $('#custom-world-field').hidden=selected('theme')!=='Vlastní téma';
- $('#appearance-field').hidden=!!photo;summary($('#live-summary'));
+ summary($('#live-summary'));
 }
-function errorTarget(key){return {companion_mode:'companion-group',companion_id:'companion-group',theme:'theme-group',photo:'photo'}[key]||key;}
+function errorTarget(key){return {companion_mode:'companion-group',companion_id:'companion-group',theme:'theme-group'}[key]||key;}
 function clearErrors(){form.querySelectorAll('[aria-invalid]').forEach(el=>el.removeAttribute('aria-invalid'));form.querySelectorAll('.error').forEach(el=>el.textContent='');}
 function displayErrors(errors){let first=null;for(const [key,message] of Object.entries(errors)){const target=$('#'+errorTarget(key));const error=$('#'+key+'-error')||$('#companion_mode-error');if(error)error.textContent=message;if(target){target.setAttribute('aria-invalid','true');first||=target;}}if(first){const control=first.matches('fieldset')?first.querySelector('input'):first;control?.focus();first.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}return first;}
-function validate(){clearErrors();const checked=validateInput(currentInput(),photo),errors={...checked.errors};if(!selected('companion')){delete errors.custom_companion;errors.companion_mode='Vyberte parťáka nebo možnost Bez parťáka.';}if(photoIssue)errors.photo=photoIssue;displayErrors(errors);return !Object.keys(errors).length;}
-function refreshPrompt(){const brief=buildStoryBrief(currentInput(),{photoPresent:!!photo});$('#prompt-preview').value=brief.prompt;$('#photo-copy-note').hidden=!photo;summary($('#check-summary'));return brief.prompt;}
+function validate(){clearErrors();const checked=validateInput(currentInput()),errors={...checked.errors};if(!selected('companion')){delete errors.custom_companion;errors.companion_mode='Vyberte parťáka nebo možnost Bez parťáka.';}displayErrors(errors);return !Object.keys(errors).length;}
+function refreshPrompt(){const brief=buildStoryBrief(currentInput(),{});$('#prompt-preview').value=brief.prompt;summary($('#check-summary'));return brief.prompt;}
 function showResult(value){
  result=value;const title=document.createElement('strong'),message=document.createElement('p');
  title.textContent=value.label_cs||({clear:'Bez zjištěné překážky',clarify:'Potřebujeme upřesnění',unsupported:'Požadavek není podporovaný',uncertain:'Dostupnost nelze předem spolehlivě ověřit'}[value.outcome]||'Kontrolu se nepodařilo dokončit');message.textContent=value.message_cs;$('#check-result').replaceChildren(title,message);$('#check-result').dataset.outcome=value.outcome||'uncertain';
@@ -50,25 +50,16 @@ async function check(){
  try{
   const readiness=await apiFetch('readiness',{signal});if(!readiness.ok)throw Error('SERVER_ERROR');const available=await readiness.json();
   if(version!==revision)return;
-  if(available.configured!==true){showResult({...available,outcome:'uncertain',label_cs:'Serverová kontrola zatím není připojená',message_cs:'Formulář prošel pouze lokální validací. Technická dostupnost ani přijetí poskytovatelem nejsou potvrzené. Údaje ani fotografie se neodeslaly. Prompt můžete zdarma zkopírovat a použít v ChatGPT.'});return;}
-  $('#check-result').textContent='Kontrolujeme technickou podporu a přijatelnost konkrétního zadání…';const body=new FormData();body.set('input',JSON.stringify(bodyInput));if(photo)body.set('photo',photo,'reference.'+(photo.type==='image/png'?'png':'jpg'));
-  const response=await apiFetch('preflight',{method:'POST',body,signal});if(!response.ok)throw Error('SERVER_ERROR');const value=await response.json();
+  if(available.configured!==true){showResult({...available,outcome:'uncertain',label_cs:'Serverová kontrola zatím není připojená',message_cs:'Formulář prošel pouze lokální validací. Technická dostupnost ani přijetí poskytovatelem nejsou potvrzené. Údaje se neodeslaly. Prompt můžete zdarma zkopírovat a použít v ChatGPT.'});return;}
+  $('#check-result').textContent='Kontrolujeme technickou podporu a přijatelnost konkrétního zadání…';const body=JSON.stringify(bodyInput);
+  const response=await apiFetch('preflight',{method:'POST',headers:{'content-type':'application/json'},body,signal});if(!response.ok)throw Error('SERVER_ERROR');const value=await response.json();
   if(!['clear','clarify','unsupported','uncertain'].includes(value.outcome)||typeof value.message_cs!=='string'||(value.outcome==='clear'&&(!value.approval_token||value.can_generate!==true)))throw Error('INVALID_RESPONSE');
   if(version===revision)showResult(value);
  }catch(error){if(version===revision)showResult({outcome:'uncertain',label_cs:'Kontrolu se nepodařilo dokončit',message_cs:'Server neodpověděl spolehlivě. Zadání zůstalo zachované; můžete kontrolu zopakovat. Platba ani generování se nespustily.'});}
  finally{clearTimeout(timeout);if(version===revision){checking=false;controller=null;$('#check-result').removeAttribute('aria-busy');}}
 }
-form.addEventListener('input',event=>{if(event.target.type==='file')return;invalidate();update();const key=event.target.id;$('#'+key+'-error')?.replaceChildren();event.target.removeAttribute('aria-invalid');});
-form.addEventListener('change',event=>{if(event.target.type!=='file'){invalidate();update();}});
-$('#photo').addEventListener('change',async event=>{
- invalidate();const file=event.target.files[0];if(!file)return;const version=revision;photoIssue='';
- if(!['image/png','image/jpeg'].includes(file.type)||file.size>PRODUCT.maxPhotoBytes||!file.size)photoIssue='Vyberte JPEG nebo PNG do 10 MB.';
- if(!photoIssue){try{const bitmap=await createImageBitmap(file);bitmap.close();}catch{photoIssue='Fotografii nelze přečíst. Vyberte jiný JPEG nebo PNG.';}}
- if(version!==revision)return;
- if(photoIssue){$('#photo-error').textContent=photoIssue;event.target.setAttribute('aria-invalid','true');event.target.value='';return;}
- if(photoURL)URL.revokeObjectURL(photoURL);photo=file;photoURL=URL.createObjectURL(file);$('#photo-preview').src=photoURL;$('#photo-selection').hidden=false;$('#photo-error').textContent='';event.target.removeAttribute('aria-invalid');update();
-});
-$('#remove-photo').addEventListener('click',()=>{invalidate();if(photoURL)URL.revokeObjectURL(photoURL);photo=null;photoURL=null;photoIssue='';$('#photo').value='';$('#photo-preview').removeAttribute('src');$('#photo-selection').hidden=true;$('#photo-error').textContent='';update();$('#photo').focus();});
+form.addEventListener('input',event=>{invalidate();update();const key=event.target.id;$('#'+key+'-error')?.replaceChildren();event.target.removeAttribute('aria-invalid');});
+form.addEventListener('change',event=>{invalidate();update();});
 form.addEventListener('submit',event=>{event.preventDefault();if(!validate())return;opener=$('#check-submit');refreshPrompt();dialog.showModal();$('#close-check').focus();window.productEvent?.('form_complete');check();});
 $('#close-check').addEventListener('click',()=>dialog.close());
 dialog.addEventListener('close',()=>{controller?.abort();revision++;checking=false;controller=null;$('#check-result').removeAttribute('aria-busy');opener?.focus();});
@@ -77,5 +68,5 @@ $('#edit-input').addEventListener('click',()=>{const key=Object.keys(result?.fie
 $('#select-prompt').addEventListener('click',()=>{$('#prompt-details').open=true;const text=$('#prompt-preview');text.focus();text.select();text.setSelectionRange(0,text.value.length);});
 $('#copy-prompt').addEventListener('click',async()=>{const prompt=refreshPrompt();try{if(!navigator.clipboard?.writeText)throw Error('NO_CLIPBOARD');await navigator.clipboard.writeText(prompt);$('#copy-status').textContent='Prompt zkopírován';}catch{$('#prompt-details').open=true;$('#select-prompt').click();$('#copy-status').textContent='Schránka není dostupná. Text je označený; zkopírujte jej pomocí Ctrl+C nebo nabídky Kopírovat.';}});
 $('#continue-payment').addEventListener('click',async()=>{if(paymentPending||checking||result?.outcome!=='clear'||result.checkout_available!==true)return;paymentPending=true;$('#continue-payment').disabled=true;try{const response=await apiFetch('checkout',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({input:currentInput(),approval_token:result.approval_token})});const checkout=await response.json();const url=new URL(checkout.url);if(!response.ok||url.protocol!=='https:')throw Error('CHECKOUT_UNAVAILABLE');location.assign(url.href);}catch{$('#copy-status').textContent='Platbu nelze otevřít. Zadání zůstalo zachované a nic se nezaplatilo.';}finally{paymentPending=false;$('#continue-payment').disabled=false;}});
-window.addEventListener('pagehide',()=>{controller?.abort();if(photoURL)URL.revokeObjectURL(photoURL);});
+window.addEventListener('pagehide',()=>{controller?.abort();});
 update();window.productEvent?.('form_start');

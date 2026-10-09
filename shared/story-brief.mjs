@@ -13,12 +13,12 @@ export function activeInput(raw) {
   return input;
 }
 
-export function buildStoryBrief(raw, {photoPresent=false, appearanceFromPhoto='', target='chatgpt'}={}) {
-  const checked = validateInput(activeInput(raw), photoPresent ? {type:'image/png',size:1} : null);
+export function buildStoryBrief(raw, {target='chatgpt'}={}) {
+  const checked = validateInput(activeInput(raw));
   if (!checked.valid) throw Object.assign(Error('INVALID_INPUT'), {fieldErrors:checked.errors});
   const input = checked.input, catalog = input.companion_mode === 'catalog' ? getCompanion(input.companion_id) : null;
   const companion = input.companion_mode === 'none' ? {mode:'none',volba:'Bez parťáka',pokyn:'Nepřidávej stálého parťáka. Dítě je aktivní hlavní hrdina.'} : catalog ? {mode:'catalog',volba:'Připravený parťák',jmeno:input.companion_name||catalog.name,druh:catalog.kind,vzhled:catalog.appearance,charakter:catalog.character} : {mode:'custom',volba:'Vlastní parťák',popis:input.custom_companion,...(input.companion_name?{jmeno:input.companion_name}:{})};
-  const customer = {companion_type:catalog?catalog.kind:input.companion_mode==='none'?'Bez parťáka':input.custom_companion,companion_name:companion.jmeno||'',companion_visual_description:catalog?catalog.appearance:'',companion_character_description:catalog?catalog.character:'',child_name:input.child_name,child_age:input.child_age,theme:input.theme==='Vlastní téma'?input.custom_theme:input.theme,companion,appearance_description:photoPresent?(appearanceFromPhoto||'Použij fotografii dítěte přiloženou zvlášť v tomto chatu jako referenci.'):input.appearance_description,reference_photo_present:photoPresent,personal_wish:input.personal_wish||'',requested_scenes:input.requested_scenes||''};
+  const customer = {companion_type:catalog?catalog.kind:input.companion_mode==='none'?'Bez parťáka':input.custom_companion,companion_name:companion.jmeno||'',companion_visual_description:catalog?catalog.appearance:'',companion_character_description:catalog?catalog.character:'',child_name:input.child_name,child_age:input.child_age,theme:input.theme==='Vlastní téma'?input.custom_theme:input.theme,companion,appearance_description:input.appearance_description,personal_wish:input.personal_wish||'',requested_scenes:input.requested_scenes||''};
   if(!['chatgpt','api'].includes(target))throw Error('INVALID_BRIEF_TARGET');
   const boundary=STORY_PROMPT.indexOf('FORMÁT VÝSTUPU PO ÚSPĚŠNÉ KONTROLE');
   const core=target==='api'?STORY_PROMPT:STORY_PROMPT.slice(0,boundary)

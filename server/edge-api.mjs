@@ -25,27 +25,27 @@ export function createEdgeApi({ backend, publishableKey }) {
     if (request.method !== 'POST') return reply({ error: 'METHOD_NOT_ALLOWED' }, 405);
     try {
       if (!await backend.consumeCheckBudget()) return reply({ error: 'RATE_LIMIT', message_cs: 'Kontrola dosáhla dočasného limitu. Zadání zůstává zachované.' }, 429);
-      if (Number(request.headers.get('content-length')) > PRODUCT.maxPhotoBytes + 65536) return reply({ error: 'TOO_LARGE' }, 413);
+      if (Number(request.headers.get('content-length')) > PRODUCT.maxRequestBytes) return reply({ error: 'TOO_LARGE' }, 413);
       const reader = request.body?.getReader(); const chunks = []; let size = 0;
       if (!reader) return reply({ error: 'EMPTY_BODY' }, 400);
       while (true) { const { value, done } = await reader.read(); if (done) break;
-        size += value.byteLength; if (size > PRODUCT.maxPhotoBytes + 65536) { await reader.cancel(); return reply({ error: 'TOO_LARGE' }, 413); } chunks.push(value);
+        size += value.byteLength; if (size > PRODUCT.maxRequestBytes) { await reader.cancel(); return reply({ error: 'TOO_LARGE' }, 413); } chunks.push(value);
       }
       const bytes = new Uint8Array(size); let offset = 0; for (const c of chunks) { bytes.set(c, offset); offset += c.length; }
       const contentType = request.headers.get('content-type') || '';
       const body = new Request(request.url, { method: 'POST', headers: { 'content-type': contentType }, body: bytes });
-      let input, photo = null;
+      let input;
       if (contentType.startsWith('multipart/form-data')) {
         const form = await body.formData(); if (typeof form.get('input') !== 'string') return reply({ error: 'INVALID_INPUT' }, 400);
-        input = JSON.parse(form.get('input')); const file = form.get('photo'); if (file && typeof file !== 'string' && file.size) photo = file;
+        input = JSON.parse(form.get('input')); if ([...form.values()].some(v => typeof v !== 'string')) return reply({ error: 'FILES_NOT_SUPPORTED' }, 400);
       } else if (contentType.startsWith('application/json')) input = await body.json();
       else return reply({ error: 'CONTENT_TYPE_REQUIRED' }, 415);
       // Only the existing technical validation and anonymous audit are active.
-      // No approval, persistence of customer input/photo, payment or AI calls.
-      const value = await preflight(input, photo, { recordCheck: audit => backend.recordCheck(audit) });
+      // No approval, persistence of customer input, payment or AI calls.
+      const value = await preflight(input, { recordCheck: audit => backend.recordCheck(audit) });
       if (value.reason_codes?.includes('MISSING_CONFIGURATION')) {
         value.label_cs = 'Technická kontrola dokončena';
-        value.message_cs = 'Zadání prošlo serverovou kontrolou formuláře. Přijatelnost poskytovatelem AI zatím není ověřená. Zadání ani fotografie se neuložily; můžete zkopírovat prompt. Platba ani generování se nespustily.';
+        value.message_cs = 'Zadání prošlo serverovou kontrolou formuláře. Přijatelnost poskytovatelem AI zatím není ověřená. Zadání se neuložilo; můžete zkopírovat prompt. Platba ani generování se nespustily.';
       }
       return reply({ ...value, database_connected: true, checkout_available: false });
     } catch { return reply({ error: 'CHECK_FAILED' }, 503); }

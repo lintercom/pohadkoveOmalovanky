@@ -16,7 +16,7 @@ Lokální náhled: http://127.0.0.1:4173. Build sestaví aktuální prompty, HTM
 
 ## Zdroj řídícího promptu
 
-Jediný aktuální dokument je [Ridici_prompt_6_omalovanek_v1_6.md](spec/Ridici_prompt_6_omalovanek_v1_6.md), přesná kopie dodaná uživatelem. `scripts/build-prompts.mjs` z něj sestaví `server/prompts.mjs`; generované kopie neupravovat ručně. `shared/story-brief.mjs` vytváří zadání pro náhled, schránku i budoucí API. Kopírovaný prompt obsahuje výslovný ruční režim, produkce zachovává serverové schválení a ověření platby. Fotografie se v ChatGPT přikládá samostatně.
+Jediný aktuální dokument je [Ridici_prompt_6_omalovanek_v1_6.md](spec/Ridici_prompt_6_omalovanek_v1_6.md), uživatelem dodaný dokument upravený podle následných požadavků. `scripts/build-prompts.mjs` z něj sestaví `server/prompts.mjs`; generované kopie neupravovat ručně. `shared/story-brief.mjs` vytváří zadání pro náhled, schránku i budoucí API. Kopírovaný prompt obsahuje výslovný ruční režim, produkce zachovává serverové schválení a ověření platby. Podobu dítěte určuje povinný textový popis vzhledu.
 
 Verze 1.6 obsahuje pravidla světa, plán šesti odlišných scén, invarianty konstrukce a stavy postav a vybavení. JSON Schema a serverová validace jsou v `server/story-schema.mjs` a `server/product.mjs`. Obrazové vstupy předávají relevantní pravidla a stavy bez celého zákaznického formuláře. Pevné požadované nastavení: gpt-image-2, medium, 1536×1024, n=1, jeden pokus na scénu. Jeho dostupnost musí ověřit skutečný poskytovatel; úprava promptu sama nic negeneruje.
 

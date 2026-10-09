@@ -33,12 +33,12 @@ test('server check audits non-personal fields and never approves without AI prov
   assert.equal(audit.length, 1); assert.ok(!JSON.stringify(audit).includes('Krátké vlasy'));
   assert.equal((await handle(req('checkout', { method: 'POST' }))).status, 503);
 });
-test('missing fields, invalid photo, oversized requests, rate limit and database failure are handled', async () => {
+test('missing fields, unsupported file upload, oversized requests, rate limit and database failure are handled', async () => {
   const { handle } = setup();
   let r = await handle(req('preflight', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' }));
   assert.equal((await r.json()).outcome, 'clarify');
   const form = new FormData(); form.set('input', JSON.stringify(input)); form.set('photo', new Blob(['invalid'], { type: 'image/png' }), 'photo.png');
-  r = await handle(req('preflight', { method: 'POST', body: form })); assert.equal((await r.json()).outcome, 'unsupported');
+  r = await handle(req('preflight', { method: 'POST', body: form })); assert.equal(r.status,400); assert.equal((await r.json()).error,'FILES_NOT_SUPPORTED');
   assert.equal((await handle(req('preflight', { method: 'POST', headers: { 'content-length': '20000000' }, body: '{}' }))).status, 413);
   assert.equal((await setup({ budget: false }).handle(req('preflight', { method: 'POST', body: '{}' }))).status, 429);
   assert.equal((await setup({ connected: false }).handle(req('readiness'))).status, 503);

@@ -34,7 +34,7 @@ test('private storage refuses unsafe paths and uploads without overwriting', asy
     calls++; assert.equal(init.headers['x-upsert'], 'false'); return new Response(null, { status: 200 });
   }});
   await assert.rejects(backend.getPrivate('../secret'), /INVALID_STORAGE_KEY/);
-  await assert.rejects(backend.putPrivate('child-photos', 'order/photo.png', new Blob(['x'], { type: 'text/plain' })), /INVALID_PRIVATE_FILE/);
+  await assert.rejects(backend.putPrivate('story-images', 'order/reference.png', new Blob(['x'], { type: 'text/plain' })), /INVALID_PRIVATE_FILE/);
   assert.equal(calls, 0);
-  assert.equal(await backend.putPrivate('child-photos', 'order/photo.png', new Blob(['x'], { type: 'image/png' })), 'order/photo.png');
+  assert.equal(await backend.putPrivate('story-images', 'order/reference.png', new Blob(['x'], { type: 'image/png' })), 'order/reference.png');
 });

@@ -1,12 +1,12 @@
 import { getCompanion, companionContext, CATALOG_VERSION } from './companions.mjs';
 import { validateStoryStructure } from './story-schema.mjs';
-export const PRODUCT = Object.freeze({ pages: 6, priceCzk: 80, language: 'cs', rulesVersion: '1.6-prompt-20261008', maxPhotoBytes: 10 * 1024 * 1024 });
+export const PRODUCT = Object.freeze({ pages: 6, priceCzk: 80, language: 'cs', rulesVersion: '1.6-no-photo-20261009', maxRequestBytes: 64 * 1024, maxImageBytes: 10 * 1024 * 1024 });
 export const IMAGE_SETTINGS = Object.freeze({ model: 'gpt-image-2', quality: 'medium', size: '1536x1024', n: 1 });
 export const COLORS = Object.freeze({ red: '#C62828', yellow: '#AD7900', green: '#2E7D32', blue: '#1565C0', purple: '#7B1FA2', pink: '#C83F81', orange: '#C45B00' });
 export const THEMES = ['Kouzelný les', 'Zvířecí kamarádi', 'Zatoulaný obláček', 'Podmořský svět', 'Vesmír', 'Dinosauři', 'Vlastní téma'];
 export const COMPANIONS = ['Překvapení', 'Pejsek', 'Kočička', 'Králíček', 'Medvídek', 'Malý dráček', 'Vlastní zadání'];
 
-export function validateInput(raw, photo = null) {
+export function validateInput(raw) {
   const errors = {};
   const string = (key, max, required = false) => {
     const value = typeof raw?.[key] === 'string' ? raw[key].trim() : '';
@@ -17,7 +17,7 @@ export function validateInput(raw, photo = null) {
     child_name: string('child_name', 30, true), child_age: raw?.child_age,
     theme: string('theme', 120, true), custom_theme: string('custom_theme', 120),
     companion_type: string('companion_type', 120), custom_companion: string('custom_companion', 120),
-    companion_name: string('companion_name', 60), appearance_description: string('appearance_description', 200, !photo),
+    companion_name: string('companion_name', 60), appearance_description: string('appearance_description', 200, true),
     personal_wish: string('personal_wish', 300), requested_scenes:string('requested_scenes',500),
     companion_mode:raw?.companion_mode ?? (raw?.companion_type==='Bez parťáka'?'none':'custom'),
     companion_id:string('companion_id',60), catalog_version:CATALOG_VERSION
@@ -33,18 +33,17 @@ export function validateInput(raw, photo = null) {
   if(input.companion_mode!=='custom')input.custom_companion='';
   if(input.theme!=='Vlastní téma')input.custom_theme='';
   if(input.companion_mode==='none'){input.companion_type='Bez parťáka';input.companion_name='';input.custom_companion='';}
-  if (photo && (!['image/png', 'image/jpeg'].includes(photo.type) || photo.size <= 0 || photo.size > PRODUCT.maxPhotoBytes)) errors.photo = 'Vyberte JPEG nebo PNG do 10 MB.';
-  // Client-supplied approval, price, model, page count and photo-present flags are ignored.
+  // Client-supplied approval, price, model and page count are ignored.
   return { valid: !Object.keys(errors).length, input, errors };
 }
 
-export function customerData(input, photo, appearanceFromPhoto) {
+export function customerData(input) {
   return {
     child_name: input.child_name, child_age: input.child_age,
     theme: input.theme === 'Vlastní téma' ? input.custom_theme : input.theme,
     companion_type: input.companion_type === 'Vlastní zadání' ? input.custom_companion : input.companion_type,
-    companion_name: input.companion_name, reference_photo_present: !!photo,
-    appearance_description: photo ? appearanceFromPhoto : input.appearance_description,
+    companion_name: input.companion_name,
+    appearance_description: input.appearance_description,
     personal_wish: input.personal_wish,requested_scenes:input.requested_scenes,companion:companionContext(input)
   };
 }

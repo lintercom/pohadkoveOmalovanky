@@ -9,8 +9,8 @@ export function createOrderEngine({store,preflightServices,provider,clock=Date.n
  if(!store||!Number.isInteger(concurrency)||concurrency<1||!Number.isInteger(retentionDays)||retentionDays<1)throw Error('INVALID_RUNTIME');
  const change=(id,fn)=>store.transaction(s=>{const o=s.orders[id];if(!o)throw Error('ORDER_NOT_FOUND');return fn(o,s);});
  return {
-  async create({approvalToken,input,photo=null,source='direct'}){
-   const approved=await requireApproval(approvalToken,input,photo,preflightServices);const token=crypto.randomUUID()+crypto.randomUUID();const accessHash=await hash(token);
+  async create({approvalToken,input,source='direct'}){
+   const approved=await requireApproval(approvalToken,input,preflightServices);const token=crypto.randomUUID()+crypto.randomUUID();const accessHash=await hash(token);
    const id=store.transaction(s=>{
     // Same approved submission cannot create multiple payable orders on refresh.
     if(Object.values(s.orders).some(o=>o.approvalToken===approvalToken))throw Error('ORDER_ALREADY_EXISTS');

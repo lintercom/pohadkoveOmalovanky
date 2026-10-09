@@ -1,7 +1,7 @@
 // Server-only adapter. Never import this module from public browser code.
 import { PRODUCT } from './product.mjs';
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const buckets = new Set(['child-photos', 'story-images', 'story-pdfs']);
+const buckets = new Set(['story-images', 'story-pdfs']);
 export function createSupabaseBackend({ url, secretKey, fetchImpl = fetch, clock = Date.now }) {
   if (typeof document !== 'undefined') throw Error('SERVER_ONLY');
   const origin = new URL(url);
@@ -93,9 +93,8 @@ export function createSupabaseBackend({ url, secretKey, fetchImpl = fetch, clock
         rulesVersion: a.rules_version, model: a.model, expiresAt: Date.parse(a.expires_at) };
     },
     async putPrivate(bucket, key, file) {
-      const photo = bucket === 'child-photos';
-      const types = photo ? ['image/png', 'image/jpeg'] : bucket === 'story-pdfs' ? ['application/pdf'] : ['image/png', 'image/jpeg', 'image/webp'];
-      const limit = bucket === 'story-pdfs' ? 50 * 1024 * 1024 : PRODUCT.maxPhotoBytes;
+      const types = bucket === 'story-pdfs' ? ['application/pdf'] : ['image/png', 'image/jpeg', 'image/webp'];
+      const limit = bucket === 'story-pdfs' ? 50 * 1024 * 1024 : PRODUCT.maxImageBytes;
       if (!file || !types.includes(file.type) || file.size <= 0 || file.size > limit) throw Error('INVALID_PRIVATE_FILE');
       await request(objectPath(bucket, key), { method: 'POST', headers: { 'content-type': file.type, 'x-upsert': 'false' }, body: file });
       return key;

@@ -4,9 +4,9 @@ Rešerše veřejných stránek a oficiální dokumentace, nikoli rozhovory se z�
 
 ## Pozorované nabídky
 
-- [Moje Hravotéka](https://www.mojehravoteka.cz/): veřejná nabídka omalovánek z fotografie a personalizovaných příběhů. Starší tvrzení v podkladu o teprve připravovaných příbězích nepřebíráme.
+- [Moje Hravotéka](https://www.mojehravoteka.cz/): veřejná nabídka personalizovaných materiálů a příběhů. Starší tvrzení v podkladu o teprve připravovaných příbězích nepřebíráme.
 - [Petra Art](https://www.petra-art.cz/omalovanky/): tematické personalizované materiály se jménem a dalšími aktivitami; rozsah není přímo shodný s naším produktem.
-- [Hrdina knížky](https://hrdinaknizky.cz/): jméno a fotografie; fiktivní děti v ukázkách jsou označené. Důsledek: vlastní skutečná ukázka PDF s označením fiktivního dítěte.
+- [Hrdina knížky](https://hrdinaknizky.cz/): personalizované knížky; fiktivní děti v ukázkách jsou označené. Důsledek: vlastní skutečná ukázka PDF s označením fiktivního dítěte.
 - [Příběhovo](https://pribehovo.cz/): opakované příběhy v češtině/slovenštině. Naše jednorázová nabídka musí jasně uvést šest stran a cenu.
 - [Wonderbly](https://www.wonderbly.com/personalized-products/where-are-you-book): produktové náhledy personalizované knihy. Důsledek: prolistovat celý náš vzor před vyplňováním.
 
@@ -20,13 +20,13 @@ Nejde o systematické cenové srovnání ani doklad úspěšnosti těchto webů.
 | [Baymard: checkout UX](https://baymard.com/learn/checkout-flow-ux-optimization) a [stav checkout UX](https://baymard.com/research-articles/current-state-of-checkout-ux) | Minimum povinných polí, bez povinného účtu, souhrn a zachování vstupů při návratu. Článek aktualizovaný 25. 11. 2025 není novou studií 2026. |
 | [WCAG 2.2: velikost cíle](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) | Viditelné zaměření klávesnice, popisky a nativní ovládání. Projekt míří na 44px hlavní cíle; malé číselné přepínače mají alespoň 27px a mezery. Nejde o certifikaci přístupnosti. |
 | [Core Web Vitals prahy](https://web.dev/articles/defining-core-web-vitals-thresholds) | Cíle LCP 2,5 s, INP 200 ms, CLS 0,1 na p75. WebP náhledy, známé rozměry, odložené ostatní obrázky. Skutečné výsledky zatím nemáme. |
-| [ICO: minimalizace dětských údajů](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/childrens-information/childrens-code-guidance-and-resources/age-appropriate-design-a-code-of-practice-for-online-services/8-data-minimisation/) | Návrhový princip: volitelná fotografie, bez dětských údajů v analytice. Nejde o právní posudek pro ČR. |
+| [ICO: minimalizace dětských údajů](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/childrens-information/childrens-code-guidance-and-resources/age-appropriate-design-a-code-of-practice-for-online-services/8-data-minimisation/) | Návrhový princip: textový popis vzhledu, bez dětských údajů v analytice. Nejde o právní posudek pro ČR. |
 | [Stripe webhooky](https://docs.stripe.com/webhooks) | Ověření podpisu nad původním tělem, časové okno, duplicity událostí a plateb. |
 | [Cloudflare Queues](https://developers.cloudflare.com/queues/reference/delivery-guarantees/) | Doručení může nastat vícekrát; trvalý záznam pokusu a idempotence před placeným voláním. |
 
 ## Pracovní hypotézy, nikoli persony odvozené z demografie
 
-Rodič nebo pečující hledá aktivitu na odpoledne či malý osobní dárek. Očekává rychle pochopitelný výsledek, dobrý tisk a přiměřenou obtížnost. Možné překážky: nejistý vzhled výsledku, nutnost fotografie, skryté náklady. Proto nejdřív plná ukázka, 80 Kč / šest stran, možnost bez fotky a krátký formulář. Ověřit rozhovory a testem úlohy: rozumí produktu, dokáže prolistovat, zvolit věk a dokončit zadání? Mateřství samo neurčuje věk, rozpočet ani technickou zdatnost.
+Rodič nebo pečující hledá aktivitu na odpoledne či malý osobní dárek. Očekává rychle pochopitelný výsledek, dobrý tisk a přiměřenou obtížnost. Možné překážky: nejistý vzhled výsledku a skryté náklady. Proto nejdřív plná ukázka, 80 Kč / šest stran, textový popis vzhledu a krátký formulář. Ověřit rozhovory a testem úlohy: rozumí produktu, dokáže prolistovat, zvolit věk a dokončit zadání? Mateřství samo neurčuje věk, rozpočet ani technickou zdatnost.
 
 
 Předpoklad pro rok 2027: může růst význam důvěry, jasného původu ukázky a kontroly nákladů AI produktů. Jde o hypotézu, ne prokázaný trend nebo prognózu prodeje. Ověřovat vlastním doručením, refundacemi a příspěvkem po nákladech.

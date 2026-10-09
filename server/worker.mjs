@@ -20,14 +20,14 @@ export async function handleApi(request,services={}) {
     const origin=request.headers.get('origin');
     if(origin && origin!==url.origin)return json({error:'ORIGIN_NOT_ALLOWED'},403);
     try {
-      const bytes=await readBounded(request,PRODUCT.maxPhotoBytes+64*1024);
+      const bytes=await readBounded(request,PRODUCT.maxRequestBytes);
       const bodyRequest=new Request(url,{method:'POST',headers:{'content-type':request.headers.get('content-type')||''},body:bytes});
-      let input,photo=null;
+      let input;
       if((request.headers.get('content-type')||'').startsWith('multipart/form-data')) {
-        const form=await bodyRequest.formData();const fields=form.get('input');if(typeof fields!=='string')throw new Error('INVALID_INPUT');input=JSON.parse(fields);const file=form.get('photo');if(file && typeof file!=='string' && file.size)photo=file;
+        const form=await bodyRequest.formData();const fields=form.get('input');if(typeof fields!=='string')throw new Error('INVALID_INPUT');input=JSON.parse(fields);if([...form.values()].some(v=>typeof v!=='string'))throw Error('FILES_NOT_SUPPORTED');
       } else { input=await bodyRequest.json(); }
-      return json(await preflight(input,photo,services.preflight));
-    } catch(e) {return json({outcome:'clarify',label_cs:'Potřebujeme upřesnění',status:'needs_review',can_generate:false,reason_codes:['INVALID_INPUT'],message_cs:e.message==='TOO_LARGE'?'Fotografie nebo zadání jsou příliš velké.':'Zadání nelze přečíst. Zkontrolujte vyplněné údaje.',suggested_alternative_cs:null},e.message==='TOO_LARGE'?413:400);}
+      return json(await preflight(input,services.preflight));
+    } catch(e) {return json({outcome:'clarify',label_cs:'Potřebujeme upřesnění',status:'needs_review',can_generate:false,reason_codes:['INVALID_INPUT'],message_cs:e.message==='TOO_LARGE'?'Zadání je příliš velké.':'Zadání nelze přečíst. Zkontrolujte vyplněné údaje.',suggested_alternative_cs:null},e.message==='TOO_LARGE'?413:400);}
   }
   // Payment and generation cannot be reached by setting approved=true in a browser.
   if (['/api/checkout','/api/generate'].includes(url.pathname)) return json(unavailable(),503);
