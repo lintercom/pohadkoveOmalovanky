@@ -11,3 +11,5 @@ Konfigurátor /vytvorit/ je noindex: dítě → svět → vhodní parťáci → 
 Statické HTML vzniká scripts/build-pages.mjs. Autorované klientské CSS/JS a veřejné assety jsou v dist/, serverový zdroj v server/. Ukázkové PDF vzniká make-sample.py ze spec/. Nezaměňovat hotovou ukázku za běžící zákaznický generátor. Poskytovatel, platba, produkční úložiště a doručení nejsou připojeny; API se bez nich bezpečně zastaví. Backend a jeho testy jsou platná příprava služby.
 
 Sites je hostovaný náhled. pages-dist je odvozený statický export pro GitHub Pages; jeho Git metadata musí zůstat zachována. Kontaktní e-mail: petrlavikweb@gmail.com. Další práce a podmínky dokončení: DODELAT.md. Provedený úklid a ověření: VALIDATION.md.
+
+Informační stránky a technická cookie lišta: LEGAL_COOKIES.md. Provozovatel je uveden pouze na informačních stránkách; patička obsahuje odkazy, nikoli jeho identifikační údaje.

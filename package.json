@@ -5,7 +5,7 @@
   "description": "Český web personalizovaných příběhů se šesti omalovánkami",
   "scripts": {
     "start": "node preview-server.cjs",
-    "check": "node --check dist/app.js && node --check dist/configurator.mjs && node --check dist/site.js && node check-assets.cjs && node --test tests/*.test.mjs",
+    "check": "node --check dist/app.js && node --check dist/configurator.mjs && node --check dist/site.js && node --check dist/cookies.js && node --check dist/journey.js && node --check content/legal.mjs && node check-assets.cjs && node --test tests/*.test.mjs",
     "build": "node scripts/build-pages.mjs && node scripts/build-worker.cjs"
   },
   "engines": {

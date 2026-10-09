@@ -18,7 +18,7 @@ Připojit skutečné textové a obrazové volání k řídícímu promptu 1.6. D
 Napojit pokračování z kontrolního modálu k platbě, průběh objednávky, chybové stavy, obnovení a soukromé stažení PDF. Vývojové kopírování promptu oddělit od produkční zákaznické cesty až při jejím zprovoznění. Hotovo: rodič dokončí vše na webu bez další aplikace a neztratí zadání při opravě chyby.
 
 ## 6. Provozní a informační dokončení
-Doplnit provozovatele, obchodní podmínky a pravdivý popis zpracování údajů. Nastavit mazání fotografií, schválení, výsledků, osiřelých souborů a záloh. Přidat limity požadavků, rozpočty a monitoring bez osobních údajů dítěte. Hotovo: retenční úlohy skutečně běží, obnova a podpora jsou ověřené. Kontaktní e-mail je již nastavený.
+Provozovatel, podmínky současného provozu, ochrana osobních údajů a technická cookie lišta jsou doplněny. Před spuštěním prodeje doplnit konkrétní platební a dodací proces a aktualizovat skutečné zpracovatele a dobu uchování. Nastavit mazání fotografií, schválení, výsledků, osiřelých souborů a záloh. Přidat limity požadavků, rozpočty a monitoring bez osobních údajů dítěte. Hotovo: retenční úlohy skutečně běží, obnova a podpora jsou ověřené. Kontaktní e-mail je již nastavený.
 
 ## 7. Finální kontrola a nasazení
 Ověřit celý nákup a doručení s řízeným rozpočtem. Udělat skutečnou kontrolu mobilu, klávesnice, dialogů, schránky a čtečky; zde proběhly automatické kontroly, nikoli nové browserové QA. Změřit výkon a zvolit způsob obsluhy veřejných assetů místo vkládání všech souborů do Workeru. Sjednotit produkční doménu, canonical a sitemap; konfigurátor a soukromé výsledky zůstanou noindex. GitHub Pages je statický export a sám serverové generování nespustí. Měření návštěvnosti je volitelné a nesmí obsahovat zákaznické zadání.
