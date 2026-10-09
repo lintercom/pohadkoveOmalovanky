@@ -12,7 +12,7 @@ test('four native disclosures keep explanations and actions beside each step wit
   assert.match(b[1],/<a class="button" href=/);assert.ok(b[1].includes('>'+String(i+1)+'</span>'));
  }
  assert.ok(!section.includes('role="tab'));assert.ok(!section.includes('tabindex="-1"'));
- for(const copy of ['Zkontrolujte zadání','AI vytvoří českou pohádku','Hotové PDF si stáhněte přímo z webu'])assert.ok(section.includes(copy),copy);
+ for(const copy of ['Zkontrolujte zadání','Pohádku a obrázky vytvoří AI','Hotové PDF si stáhněte přímo z webu'])assert.ok(section.includes(copy),copy);
  for(const href of ['/vytvorit/','/navody/jak-vytisknout-omalovanky/','#ukazka'])assert.ok(section.includes('href="'+href+'"'));
  assert.ok(!html.includes('ChatGPT'));assert.ok(!html.includes('chatgpt.com/'));assert.ok(!html.includes('nejsou spuštěné'));assert.ok(!html.includes('Zkopírujte zadání'));
  assert.equal((section.match(/class="journey-art /g)||[]).length,2);

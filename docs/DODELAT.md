@@ -25,3 +25,6 @@ Provozovatel, podmínky současného provozu, ochrana osobních údajů a techni
 ## 7. Finální kontrola a nasazení
 Ověřit celý nákup a doručení s řízeným rozpočtem. Udělat skutečnou kontrolu mobilu, klávesnice, dialogů, schránky a čtečky; zde proběhly automatické kontroly, nikoli nové browserové QA. Změřit výkon a zvolit způsob obsluhy veřejných assetů místo vkládání všech souborů do Workeru. Sjednotit produkční doménu, canonical a sitemap; konfigurátor a soukromé výsledky zůstanou noindex. GitHub Pages je statický export a sám serverové generování nespustí. Měření návštěvnosti je volitelné a nesmí obsahovat zákaznické zadání.
 
+
+## Navazující příběh se stejným hrdinou
+Po doručení výsledku nabídnout „Vytvořit další příběh se stejným hrdinou“. Nové zadání převezme jméno, věk a popis vzhledu; svět, parťáka a další přání rodič vybere pro nové dobrodružství. Předvyplněné údaje musí jít upravit nebo vymazat. Každá objednávka zachová vlastní snímek zadání a projde novou kontrolou. Pro stejnou kreslenou identitu navázat na schválenou vygenerovanou referenci postavy. Uchování mezi návštěvami řešit výslovnou volbou rodiče a soukromým přístupem; údaje dítěte neukládat do URL, analytiky ani automaticky do localStorage. Tato funkce je plánovaná, zatím není dostupná.
