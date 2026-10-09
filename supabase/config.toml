@@ -1,0 +1,3 @@
+[functions.story-api]
+# The handler checks the publishable key itself; it has no private read endpoint.
+verify_jwt = false
