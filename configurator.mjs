@@ -1,6 +1,7 @@
 import { PRODUCT, validateInput } from './runtime/product.mjs';
 import { getCompanion, recommendedCompanionIds } from './runtime/companions.mjs';
 import { activeInput, buildStoryBrief } from './runtime/story-brief.mjs';
+import { apiFetch } from './api-client.mjs';
 
 const $=s=>document.querySelector(s), form=$('#configurator'), dialog=$('#check-dialog');
 let photo=null, photoURL=null, photoIssue='', checking=false, revision=0, controller=null, result=null, opener=null, paymentPending=false;
@@ -47,12 +48,11 @@ async function check(){
  if(checking)return;const version=revision,bodyInput=currentInput();refreshPrompt();checking=true;controller=new AbortController();const signal=controller.signal;const timeout=setTimeout(()=>controller?.abort(),15000);
  $('#check-result').textContent='Ověřujeme dostupnost serverové kontroly…';$('#check-result').setAttribute('aria-busy','true');$('#retry-check').hidden=true;$('#continue-payment').hidden=true;
  try{
-  if(window.staticPreview){showResult({outcome:'uncertain',label_cs:'Serverová kontrola zatím není připojená',message_cs:'Formulář prošel pouze lokální validací. Přijetí zadání poskytovatelem není ověřené. Údaje ani fotografie se neodeslaly; úplný prompt si můžete zkopírovat pro ruční použití v ChatGPT.'});return;}
-  const readiness=await fetch('/api/readiness',{signal,credentials:'same-origin',cache:'no-store'});if(!readiness.ok)throw Error('SERVER_ERROR');const available=await readiness.json();
+  const readiness=await apiFetch('readiness',{signal});if(!readiness.ok)throw Error('SERVER_ERROR');const available=await readiness.json();
   if(version!==revision)return;
   if(available.configured!==true){showResult({...available,outcome:'uncertain',label_cs:'Serverová kontrola zatím není připojená',message_cs:'Formulář prošel pouze lokální validací. Technická dostupnost ani přijetí poskytovatelem nejsou potvrzené. Údaje ani fotografie se neodeslaly. Prompt můžete zdarma zkopírovat a použít v ChatGPT.'});return;}
   $('#check-result').textContent='Kontrolujeme technickou podporu a přijatelnost konkrétního zadání…';const body=new FormData();body.set('input',JSON.stringify(bodyInput));if(photo)body.set('photo',photo,'reference.'+(photo.type==='image/png'?'png':'jpg'));
-  const response=await fetch('/api/preflight',{method:'POST',body,signal,credentials:'same-origin'});if(!response.ok)throw Error('SERVER_ERROR');const value=await response.json();
+  const response=await apiFetch('preflight',{method:'POST',body,signal});if(!response.ok)throw Error('SERVER_ERROR');const value=await response.json();
   if(!['clear','clarify','unsupported','uncertain'].includes(value.outcome)||typeof value.message_cs!=='string'||(value.outcome==='clear'&&(!value.approval_token||value.can_generate!==true)))throw Error('INVALID_RESPONSE');
   if(version===revision)showResult(value);
  }catch(error){if(version===revision)showResult({outcome:'uncertain',label_cs:'Kontrolu se nepodařilo dokončit',message_cs:'Server neodpověděl spolehlivě. Zadání zůstalo zachované; můžete kontrolu zopakovat. Platba ani generování se nespustily.'});}
@@ -76,6 +76,6 @@ $('#retry-check').addEventListener('click',()=>{if(validate())check();});
 $('#edit-input').addEventListener('click',()=>{const key=Object.keys(result?.field_errors||{})[0]||(['AMBIGUOUS_REQUEST','PROVIDER_POLICY','RIGHTS_UNRESOLVED'].some(r=>result?.reason_codes?.includes(r))?'companion_mode':'child_name');const target=$('#'+errorTarget(key));opener=(target?.matches('fieldset')?target.querySelector('input'):target)||$('#check-submit');dialog.close();opener.focus();target?.scrollIntoView({block:'center'});if(result?.field_errors)displayErrors(result.field_errors);});
 $('#select-prompt').addEventListener('click',()=>{$('#prompt-details').open=true;const text=$('#prompt-preview');text.focus();text.select();text.setSelectionRange(0,text.value.length);});
 $('#copy-prompt').addEventListener('click',async()=>{const prompt=refreshPrompt();try{if(!navigator.clipboard?.writeText)throw Error('NO_CLIPBOARD');await navigator.clipboard.writeText(prompt);$('#copy-status').textContent='Prompt zkopírován';}catch{$('#prompt-details').open=true;$('#select-prompt').click();$('#copy-status').textContent='Schránka není dostupná. Text je označený; zkopírujte jej pomocí Ctrl+C nebo nabídky Kopírovat.';}});
-$('#continue-payment').addEventListener('click',async()=>{if(paymentPending||checking||result?.outcome!=='clear'||result.checkout_available!==true)return;paymentPending=true;$('#continue-payment').disabled=true;try{const response=await fetch('/api/checkout',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({input:currentInput(),approval_token:result.approval_token})});const checkout=await response.json();const url=new URL(checkout.url);if(!response.ok||url.protocol!=='https:')throw Error('CHECKOUT_UNAVAILABLE');location.assign(url.href);}catch{$('#copy-status').textContent='Platbu nelze otevřít. Zadání zůstalo zachované a nic se nezaplatilo.';}finally{paymentPending=false;$('#continue-payment').disabled=false;}});
+$('#continue-payment').addEventListener('click',async()=>{if(paymentPending||checking||result?.outcome!=='clear'||result.checkout_available!==true)return;paymentPending=true;$('#continue-payment').disabled=true;try{const response=await apiFetch('checkout',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({input:currentInput(),approval_token:result.approval_token})});const checkout=await response.json();const url=new URL(checkout.url);if(!response.ok||url.protocol!=='https:')throw Error('CHECKOUT_UNAVAILABLE');location.assign(url.href);}catch{$('#copy-status').textContent='Platbu nelze otevřít. Zadání zůstalo zachované a nic se nezaplatilo.';}finally{paymentPending=false;$('#continue-payment').disabled=false;}});
 window.addEventListener('pagehide',()=>{controller?.abort();if(photoURL)URL.revokeObjectURL(photoURL);});
 update();window.productEvent?.('form_start');
